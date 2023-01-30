@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "714194151378",
+    "project_id": "aouer-delivery",
+    "storage_bucket": "aouer-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714194151378:android:df67c9d1f4ad6fd620ca0b",
+        "android_client_info": {
+          "package_name": "com.AOUer.delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714194151378-ts43qmdkvvfk36opsr32t3deaas49plo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDow9-qpduM6Kn-Wj6YWD7LB-ydCSPeG3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714194151378-ts43qmdkvvfk36opsr32t3deaas49plo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
