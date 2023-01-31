@@ -2,6 +2,9 @@ import 'package:delivery/screens/registration_screen.dart';
 import 'package:delivery/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
+import '../constract/color_string.dart';
+import '../constract/image_string.dart';
+
 class WelcomeScreen extends StatefulWidget {
   static const String screenRoute = 'welcome_screen';
 
@@ -15,7 +18,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 215, 212, 212),
+      backgroundColor: AOUbackground,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -26,7 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 Container(
                   height: 180,
-                  child: Image.asset('images/AOUer_logo.PNG'),
+                  child: Image.asset(AOUlogo),
                 )
               ],
             ),
@@ -35,14 +38,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               height: 30,
             ),
             MyButton(
-              color: Color.fromARGB(255, 164, 162, 162),
               title: 'Customer',
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.screenRoute);
               },
             ),
             MyButton(
-                color: Color.fromARGB(255, 164, 162, 162),
                 title: 'Delivery',
                 onPressed: () {
                   Navigator.pushNamed(context, RegistrationScreen.screenRoute);

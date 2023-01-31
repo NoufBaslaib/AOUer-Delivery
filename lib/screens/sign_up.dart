@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../constract/color_string.dart';
+import '../constract/image_string.dart';
+import '../widgets/text_feiled_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String screenRoute = 'sign_up';
@@ -21,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 215, 212, 212),
+      backgroundColor: AOUbackground,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -32,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Container(
                   height: 180,
-                  child: Image.asset('images/AOUer_logo.PNG'),
+                  child: Image.asset(AOUlogo),
                 ),
                 // ignore: prefer_const_constructors
                 Text(
@@ -43,135 +46,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                TextField(
-                  textAlign: TextAlign.center,
-                  onChanged: ((value) {}),
-                  // ignore: prefer_const_constructors
-                  decoration: InputDecoration(
-                    hintText: 'Enter your Name',
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
+                FillTextWidget(
+                  icon: Icons.person_outline_outlined,
+                  onChanged: () {},
+                  title: 'Enter your Name',
                 ),
+
                 SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  textAlign: TextAlign.center,
-                  onChanged: ((value) {}),
-                  // ignore: prefer_const_constructors
-                  decoration: InputDecoration(
-                    hintText: 'Enter youy phone number',
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
+                FillTextWidget(
+                    title: 'Enter your phone number',
+                    icon: Icons.phone,
+                    onChanged: () {}),
+
                 SizedBox(
                   height: 20,
                 ),
 
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: ((value) {
-                    email = value;
-                  }),
-                  // ignore: prefer_const_constructors
-                  decoration: InputDecoration(
-                    hintText: 'Enter your E-mail',
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
+                FillTextWidget(
+                    title: 'Enter your E-mail',
+                    icon: Icons.email,
+                    onChanged: () {}),
+
                 SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: ((value) {
-                    password = value;
-                  }),
-                  // ignore: prefer_const_constructors
-                  decoration: InputDecoration(
-                    hintText: 'Enter your password',
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
+
+                FillTextWidget(
+                    title: 'Enter your password',
+                    icon: Icons.lock,
+                    onChanged: () {}),
+
                 SizedBox(
                   height: 9,
                 ),
                 MyButton(
-                    color: Color.fromARGB(255, 164, 162, 162),
                     title: 'Sign Up',
                     onPressed: () async {
                       print(email);
