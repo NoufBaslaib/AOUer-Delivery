@@ -3,6 +3,9 @@ import 'package:delivery/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/widgets/my_button.dart';
 
+import '../constract/color_string.dart';
+import '../constract/image_string.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static const String screenRoute = 'registration_screen';
 
@@ -16,7 +19,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 215, 212, 212),
+      backgroundColor: AOUbackground,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -27,7 +30,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               children: [
                 Container(
                   height: 180,
-                  child: Image.asset('images/AOUer_logo.PNG'),
+                  child: Image.asset(AOUlogo),
                 )
               ],
             ),
@@ -36,14 +39,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 30,
             ),
             MyButton(
-              color: Color.fromARGB(255, 164, 162, 162),
               title: 'Login',
               onPressed: () {
                 Navigator.pushNamed(context, loginScreen.screenRoute);
               },
             ),
             MyButton(
-                color: Color.fromARGB(255, 164, 162, 162),
                 title: 'SignUp',
                 onPressed: () {
                   Navigator.pushNamed(context, SignUpScreen.screenRoute);

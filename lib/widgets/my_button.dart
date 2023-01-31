@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
-  MyButton({required this.color, required this.title, required this.onPressed});
-  final Color color;
+  MyButton({ required this.title, required this.onPressed});
   final String title;
   final VoidCallback onPressed;
   @override
@@ -11,7 +10,7 @@ class MyButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Material(
         elevation: 5,
-        color: color,
+        color: Color.fromARGB(255, 164, 162, 162),
         borderRadius: BorderRadius.circular(10),
         child: MaterialButton(
           onPressed: onPressed,

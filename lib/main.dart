@@ -1,7 +1,11 @@
 import 'package:delivery/screens/log_in.dart';
 import 'package:delivery/screens/map_sceaan.dart';
+import 'package:delivery/screens/otp_screen.dart';
+import 'package:delivery/screens/profile_screen.dart';
 import 'package:delivery/screens/registration_screen.dart';
+import 'package:delivery/screens/reset_pw_screen.dart';
 import 'package:delivery/screens/sign_up.dart';
+import 'package:delivery/screens/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,6 +44,10 @@ class MyApp extends StatelessWidget {
         SignUpScreen.screenRoute: (context) => SignUpScreen(),
         loginScreen.screenRoute: (context) => loginScreen(),
         MapScreen.screenRoute: (context) => MapScreen(),
+        ResetScreen.screenRoute: (context) => ResetScreen(),
+        ProfileScreen.screenRoute: (context) => ProfileScreen(),
+        OTPScreen.screenRoute: (context) => OTPScreen(),
+        UpdateProfileScreen.screenRoute: (context) => UpdateProfileScreen(),
       },
     );
   }
