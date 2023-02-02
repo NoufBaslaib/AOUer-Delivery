@@ -1,3 +1,5 @@
+
+import 'package:delivery/auth/auth.dart';
 import 'package:delivery/screens/log_in.dart';
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/otp_screen.dart';
@@ -7,6 +9,7 @@ import 'package:delivery/screens/reset_pw_screen.dart';
 import 'package:delivery/screens/sign_up.dart';
 import 'package:delivery/screens/update_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -23,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "AOU'er Delivery",
       theme: ThemeData(
         // This is the theme of your application.
@@ -36,8 +40,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      //home: const RegistrationScreen(),
-      initialRoute: WelcomeScreen.screenRoute,
+      home: const Auth(),
+      //initialRoute: WelcomeScreen.screenRoute,
       routes: {
         WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
@@ -48,6 +52,9 @@ class MyApp extends StatelessWidget {
         ProfileScreen.screenRoute: (context) => ProfileScreen(),
         OTPScreen.screenRoute: (context) => OTPScreen(),
         UpdateProfileScreen.screenRoute: (context) => UpdateProfileScreen(),
+        
+
+
       },
     );
   }
