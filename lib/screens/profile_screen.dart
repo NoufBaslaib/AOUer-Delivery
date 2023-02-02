@@ -127,7 +127,9 @@ class ProfileScreen extends StatelessWidget {
                 icon: LineAwesomeIcons.alternate_sign_out,
                 textColor: Colors.red,
                 endIcon: false,
-                onPress: () {},
+                onPress: () {
+                  FirebaseAuth.instance.signOut();
+                },
               ),
             ],
           ),

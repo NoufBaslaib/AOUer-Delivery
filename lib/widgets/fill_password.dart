@@ -1,20 +1,24 @@
+import 'package:delivery/constract/color_string.dart';
 import 'package:flutter/material.dart';
 
-class FillTextWidget extends StatelessWidget {
-  const FillTextWidget(//TextEditingController textEditingController, 
+class PasswordField extends StatelessWidget {
+  const PasswordField(
       {Key? key,
       required this.title,
-      required this.icon, required Null Function(dynamic value) onChanged,  //required Null Function() onChanged,
+      required this.icon,
+      required this.obscureText, required Null Function(dynamic value) onChanged, 
+      //required this.onChanged
       })
       : super(key: key);
   final IconData icon;
   final String title;
   //final VoidCallback onChanged;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      obscureText: false,
+      obscureText: obscureText,
       textAlign: TextAlign.center,
       //onChanged: ((value) {}),
       // ignore: prefer_const_constructors

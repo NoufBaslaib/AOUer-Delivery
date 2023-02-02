@@ -66,21 +66,21 @@ class UpdateProfileScreen extends StatelessWidget {
                   child: Column(
                 children: [
                   FillTextWidget(
-                      title: 'Enter your Name',
-                      icon: Icons.person,
-                      onChanged: () {}),
+                    title: 'Enter your Name',
+                    icon: Icons.person, onChanged: (value) {  },
+                  ),
                   FillTextWidget(
-                      title: 'Enter your Email',
-                      icon: Icons.email,
-                      onChanged: () {}),
+                    title: 'Enter your Email',
+                    icon: Icons.email, onChanged: (value) {  },
+                  ),
                   FillTextWidget(
-                      title: 'Enter your number',
-                      icon: Icons.phone,
-                      onChanged: () {}),
+                    title: 'Enter your number',
+                    icon: Icons.phone, onChanged: (value) {  },
+                  ),
                   FillTextWidget(
-                      title: 'Enter your password',
-                      icon: Icons.lock,
-                      onChanged: () {}),
+                    title: 'Enter your password',
+                    icon: Icons.lock, onChanged: (value) {  },
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
