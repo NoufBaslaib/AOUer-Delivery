@@ -1,13 +1,14 @@
-
 import 'package:delivery/auth/auth.dart';
+import 'package:delivery/screens/profile_screen.dart';
 import 'package:delivery/screens/log_in.dart';
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/otp_screen.dart';
-import 'package:delivery/screens/profile_screen.dart';
+import 'package:delivery/screens/edit_profile_screen.dart';
 import 'package:delivery/screens/registration_screen.dart';
 import 'package:delivery/screens/reset_pw_screen.dart';
 import 'package:delivery/screens/sign_up.dart';
 import 'package:delivery/screens/update_profile_screen.dart';
+import 'package:delivery/utils/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'screens/welcome_screen.dart';
@@ -16,6 +17,9 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  await UserPrefernces.init;
+
   runApp(const MyApp());
 }
 
@@ -40,8 +44,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const Auth(),
-      //initialRoute: WelcomeScreen.screenRoute,
+      //home: const ProfileScreen(),
+      // home: const Auth(),
+      initialRoute: SignUpScreen.screenRoute,
       routes: {
         WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
@@ -49,12 +54,10 @@ class MyApp extends StatelessWidget {
         loginScreen.screenRoute: (context) => loginScreen(),
         MapScreen.screenRoute: (context) => MapScreen(),
         ResetScreen.screenRoute: (context) => ResetScreen(),
-        ProfileScreen.screenRoute: (context) => ProfileScreen(),
+        //ProfileScreen.screenRoute: (context) => ProfileScreen(),
         OTPScreen.screenRoute: (context) => OTPScreen(),
-        UpdateProfileScreen.screenRoute: (context) => UpdateProfileScreen(),
-        
-
-
+        //UpdateProfileScreen.screenRoute: (context) => UpdateProfileScreen(),
+        EditProfileScreen.screenRoute: (context) => EditProfileScreen(),
       },
     );
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:delivery/screens/edit_profile_screen.dart';
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/welcome_screen.dart';
 import 'package:delivery/widgets/my_button.dart';
@@ -12,7 +13,7 @@ import '../constract/image_string.dart';
 import '../widgets/fill_password.dart';
 import '../widgets/signup_fill_password.dart';
 import '../widgets/signup_text_field.dart';
-import '../widgets/text_feiled_widget.dart';
+import '../widgets/_feiled_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String screenRoute = 'sign_up';
@@ -26,20 +27,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  String errorMessage = '';
 
-  Future signUp() async {
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) return;
+  // Future signUp() async {
+  //   final isValid = formKey.currentState!.validate();
+  //   if (!isValid) return;
 
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      Navigator.of(context).pushNamed(MapScreen.screenRoute);
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-  }
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //         email: _emailController.text.trim(),
+  //         password: _passwordController.text.trim());
+  //     Navigator.of(context).pushNamed(MapScreen.screenRoute);
+  //   } on FirebaseAuthException catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   void dipose() {
     super.dispose();
@@ -106,7 +108,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Radius.circular(10),
                                   ),
                                 ),
-                                
                               ),
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -148,7 +149,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Radius.circular(10),
                                   ),
                                 ),
-                                
                               ),
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -164,11 +164,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
                       //Sign up button
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 45),
-                        child: GestureDetector(
-                          onTap: signUp,
+                        child: MaterialButton(
+                          onPressed: () async {
+                            setState(() {});
+                            if (formKey.currentState!.validate()) {
+                              try {
+                                await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: _emailController.text,
+                                        password: _passwordController.text);
+                                errorMessage = '';
+                                Navigator.of(context)
+                                    .pushNamed(EditProfileScreen.screenRoute);
+                              } on FirebaseAuthException catch (error) {
+                                errorMessage = error.message!;
+                              }
+                              setState(() {});
+                            }
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(

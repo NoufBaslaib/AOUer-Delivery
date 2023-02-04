@@ -1,5 +1,5 @@
 import 'package:delivery/screens/otp_screen.dart';
-import 'package:delivery/widgets/text_feiled_widget.dart';
+import 'package:delivery/widgets/_feiled_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
