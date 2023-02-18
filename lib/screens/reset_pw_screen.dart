@@ -16,7 +16,7 @@ class ResetScreen extends StatefulWidget {
 }
 
 class _ResetScreenState extends State<ResetScreen> {
-  final formKey = GlobalKey<FormState>();
+  final JosKeys7 = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
   Future verifyEmail() async {
@@ -37,7 +37,7 @@ class _ResetScreenState extends State<ResetScreen> {
   @override
   Widget build(BuildContext context) {
     return (Form(
-        key: formKey,
+        key: JosKeys7,
         child: Scaffold(
           backgroundColor: AOUbackground,
           body: SafeArea(

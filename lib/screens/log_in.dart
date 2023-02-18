@@ -1,7 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'dart:io';
-
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/reset_pw_screen.dart';
 import 'package:delivery/screens/welcome_screen.dart';
@@ -10,7 +7,6 @@ import 'package:delivery/widgets/_feiled_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-
 import '../constract/color_string.dart';
 import '../constract/image_string.dart';
 import '../widgets/fill_password.dart';
@@ -24,7 +20,7 @@ class loginScreen extends StatefulWidget {
 }
 
 class _loginScreenState extends State<loginScreen> {
-  final formKey = GlobalKey<FormState>();
+  final JosKeys4 = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String errorMessage = '';
@@ -54,7 +50,7 @@ class _loginScreenState extends State<loginScreen> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: JosKeys4,
       child: Scaffold(
         backgroundColor: AOUbackground,
         appBar: AppBar(
@@ -174,7 +170,7 @@ class _loginScreenState extends State<loginScreen> {
                           onPressed: () async {
                             //next line to show loading also
                             setState(() {});
-                            if (formKey.currentState!.validate()) {
+                            if (JosKeys4.currentState!.validate()) {
                               try {
                                 await FirebaseAuth.instance
                                     .signInWithEmailAndPassword(
@@ -224,35 +220,3 @@ class _loginScreenState extends State<loginScreen> {
     );
   }
 }
-
-
-
-// Padding(
-//                 padding: const EdgeInsets.symmetric(horizontal: 45),
-//                 child: GestureDetector(
-//                   onTap: signIn,
-//                   child: Container(
-//                     padding: EdgeInsets.all(16),
-//                     decoration: BoxDecoration(
-//                         color: Colors.grey,
-//                         borderRadius: BorderRadius.circular(12)),
-//                     child: Center(child: Text('Log in')),
-//                   ),
-//                 ),
-//               ),
-
-
-// SizedBox(
-//                 height: 10,
-//               ),
-//               GestureDetector(
-//                 child: Text(
-//                   'forget your password?',
-//                   style: TextStyle(
-//                       decoration: TextDecoration.underline,
-//                       color: Color.fromARGB(255, 192, 97, 125),
-//                       fontSize: 15),
-//                 ),
-//                 onTap: () => Navigator.of(context).push(
-//                     MaterialPageRoute(builder: (context) => ResetScreen())),
-//               )
