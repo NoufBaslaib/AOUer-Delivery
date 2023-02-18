@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/screens/edit_profile_screen.dart';
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/welcome_screen.dart';
@@ -7,7 +6,6 @@ import 'package:delivery/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-
 import '../constract/color_string.dart';
 import '../constract/image_string.dart';
 import '../widgets/fill_password.dart';
@@ -24,24 +22,42 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final JosKeys4 = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  var _userType = 'customer';
   String errorMessage = '';
 
-  // Future signUp() async {
-  //   final isValid = formKey.currentState!.validate();
-  //   if (!isValid) return;
+  void _signUp() async {
+    if (JosKeys4.currentState!.validate()) {
+      JosKeys4.currentState!.save();
 
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: _emailController.text.trim(),
-  //         password: _passwordController.text.trim());
-  //     Navigator.of(context).pushNamed(MapScreen.screenRoute);
-  //   } on FirebaseAuthException catch (e) {
-  //     print(e);
-  //   }
-  // }
+      // Check if the user selected 'driver' or 'customer' in the dropdown list
+      if (_userType == 'driver') {
+        print('Adding user data to drivers collection');
+        // Add the user data to the 'drivers' collection in Firebase
+        final CollectionReference collection =
+            FirebaseFirestore.instance.collection('drivers');
+        await collection.add({
+          'email': _emailController.text,
+          'password': _passwordController.text
+        });
+        print('User data added to drivers collection');
+      } else if (_userType == 'customer') {
+        print('Adding user data to customers collection');
+        // Add the user data to the 'customers' collection in Firebase
+        final CollectionReference collection =
+            FirebaseFirestore.instance.collection('customers');
+        await collection.add({
+          'email': _emailController.text,
+          'password': _passwordController.text
+        });
+        print('User data added to customers collection');
+      }
+      // Get.to(EditProfileScreen(userType: _userType));
+    }
+  }
 
   void dipose() {
     super.dispose();
@@ -49,15 +65,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
   }
 
-  final _auth = FirebaseAuth.instance;
-
-  //late String email;
-  //late String password;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: JosKeys4,
       child: Scaffold(
         backgroundColor: AOUbackground,
         body: SafeArea(
@@ -79,9 +92,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: const TextStyle(
                             fontSize: (30), fontWeight: FontWeight.bold),
                       ),
-                      // ignore: prefer_const_constructors
+
                       SizedBox(
                         height: 30,
+                      ),
+
+                      _buildUserTypeDropdown(),
+                      // ignore: prefer_const_constructors
+                      SizedBox(
+                        height: 20,
                       ),
                       //email Text Field
                       Padding(
@@ -177,12 +196,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: MaterialButton(
                           onPressed: () async {
                             setState(() {});
-                            if (formKey.currentState!.validate()) {
+                            if (JosKeys4.currentState!.validate()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfileScreen(
+                                          userType: _userType)));
                               try {
                                 await FirebaseAuth.instance
                                     .createUserWithEmailAndPassword(
                                         email: _emailController.text,
                                         password: _passwordController.text);
+                                _signUp();
+                                print('the userType is=${_userType}');
                                 errorMessage = '';
                                 Navigator.of(context)
                                     .pushNamed(EditProfileScreen.screenRoute);
@@ -213,184 +239,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  Widget _buildUserTypeDropdown() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 45),
+      child: DropdownButtonFormField<String>(
+        value: _userType,
+        items: [
+          DropdownMenuItem(
+            value: 'customer',
+            child: const Text('Customer'),
+          ),
+          DropdownMenuItem(
+            value: 'driver',
+            child: const Text('Driver'),
+          ),
+        ],
+        onChanged: (String? value) {
+          setState(() {
+            _userType = value!;
+          });
+        },
+        decoration: const InputDecoration(
+          labelText: 'User type',
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
-
-  //final _auth = FirebaseAuth.instance;
-
-  // late String email;
-  // late String password;
-//   @override
-//   Widget build(BuildContext context) {
-//     //final controller = Get.put(SignUpCntroller());
-//     //final _formKey = GlobalKey<FormState>();
-//     return  Scaffold(
-//         backgroundColor: AOUbackground,
-//         body: SingleChildScrollView(
-//           //key: _formKey,
-//           padding: const EdgeInsets.symmetric(horizontal: 24),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             crossAxisAlignment: CrossAxisAlignment.stretch,
-//             children: [
-//               Column(children: [
-//                 Container(
-//                   height: 180,
-//                   child: Image.asset(AOUlogo),
-//                 ),
-//                 // ignore: prefer_const_constructors
-//                 Text(
-//                   'SignUp',
-//                   style: TextStyle(fontSize: (30), fontWeight: FontWeight.bold),
-//                 ),
-//                 // ignore: prefer_const_constructors
-//                 SizedBox(
-//                   height: 30,
-//                 ),
-//                 SignUpFormWidget(),
-//               ]
-
-//                   // FillTextWidget(
-//                   //   icon: Icons.person_outline_outlined,
-//                   //   onChanged: (value) {},
-//                   //   title: 'Enter your Name',
-//                   // ),
-
-//                   // SizedBox(
-//                   //   height: 20,
-//                   // ),
-//                   // FillTextWidget(
-//                   //     title: 'Enter your phone number',
-//                   //     icon: Icons.phone,
-//                   //     onChanged: (value) {}),
-
-//                   // SizedBox(
-//                   //   height: 20,
-//                   // ),
-
-//                   // SignUpTextWidget(
-//                   //     controller: controller.email,
-//                   //     title: 'Enter your E-mail',
-//                   //     icon: Icons.email,
-//                   //     onChanged: (value) {}),
-
-//                   // SizedBox(
-//                   //   height: 20,
-//                   // ),
-
-//                   //   SignUpPasswordField(
-//                   //     cotroller: controller.password,
-//                   //     icon: Icons.lock,
-//                   //     onChanged: (value) {},
-//                   //     title: 'Enter your password',
-//                   //     obscureText: true,
-//                   //   ),
-
-//                   //   SizedBox(
-//                   //     height: 9,
-//                   //   ),
-//                   //   MyButton(
-//                   //       title: 'Sign Up',
-//                   //       onPressed: () async {
-//                   //         // print(email);
-//                   //         // print(password);
-
-//                   //         // try {
-//                   //         //   final newUser =
-//                   //         //       await _auth.createUserWithEmailAndPassword(
-//                   //         //           email: email, password: password);
-//                   //         //   Navigator.pushNamed(context, MapScreen.screenRoute);
-//                   //         // } catch (e) {
-//                   //         //   print(e);
-//                   //         // }
-
-//                   //         if (_formKey.currentState!.validate()) {
-//                   //           SignUpCntroller.instance.registerUser(
-//                   //               controller.email.text.trim(),
-//                   //               controller.password.text.trim());
-//                   //         }
-//                   //       }),
-//                   // ],
-//                   ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class SignUpFormWidget extends StatelessWidget {
-//   const SignUpFormWidget({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final controller = Get.put(SignUpCntroller());
-//     final _formKey = GlobalKey<FormState>();
-//     return Container(
-//       padding: const EdgeInsets.symmetric(vertical: 20.0),
-//       child: Form(
-//           key: _formKey,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               TextFormField(
-//                 controller: controller.name,
-//                 decoration: const InputDecoration(
-//                   label: Text('Enter your name'),
-//                   prefixIcon: Icon(Icons.person),
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 10,
-//               ),
-//               TextFormField(
-//                 controller: controller.phoneNumber,
-//                 decoration: const InputDecoration(
-//                   label: Text('Enter your phone number'),
-//                   prefixIcon: Icon(Icons.phone),
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 10,
-//               ),
-//               TextFormField(
-//                 controller: controller.email,
-//                 decoration: const InputDecoration(
-//                   label: Text('Enter youe email'),
-//                   prefixIcon: Icon(Icons.email),
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 10,
-//               ),
-//               TextFormField(
-//                 controller: controller.password,
-//                 obscureText: true,
-//                 decoration: const InputDecoration(
-//                   label: Text('Enter your password'),
-//                   prefixIcon: Icon(Icons.lock),
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 10,
-//               ),
-//               SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     if (_formKey.currentState!.validate()) {
-//                       SignUpCntroller.instance.registerUser(
-//                           controller.email.text.trim(),
-//                           controller.password.text.trim());
-//                     }
-//                   },
-//                   child: const Text('SignUp'),
-//                 ),
-//               ),
-//             ],
-//           )));
-    
-//   }
-// }

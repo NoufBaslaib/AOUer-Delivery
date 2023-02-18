@@ -1,10 +1,12 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
 import 'package:delivery/constract/image_string.dart';
+import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/profile_screen.dart';
-import 'package:delivery/screens/update_profile_screen.dart';
+import 'package:delivery/screens/registration_screen.dart';
+import 'package:delivery/screens/sign_up.dart';
+import 'package:delivery/screens/type_order_screen.dart';
 import 'package:delivery/screens/welcome_screen.dart';
 import 'package:delivery/utils/user_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,6 +28,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditProfileScreen extends StatefulWidget {
+  var userType;
+  EditProfileScreen({required this.userType});
   static const screenRoute = 'edit_profile_screen';
 
   @override
@@ -33,17 +37,10 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  //const ProfileScreen({super.key});
   String? profilePic;
   TextEditingController name = TextEditingController();
-  //TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  // addData() async {
-  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //   await firebaseFirestore.collection('users');
-  // }
+  final JosKeys3 = GlobalKey<FormState>();
 
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -62,8 +59,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         });
       }
     });
+
     super.initState();
   }
+
+  void navigateToScreen() {
+    print('Value of widget.userType:${widget.userType}');
+    print('hi');
+    if (widget.userType == 'customer') {
+      print('meow');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MapScreen(),
+        ),
+      );
+      print('nouf');
+    } else if (widget.userType == 'driver') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TypeOrder(),
+        ),
+      );
+    }
+  }
+
   final user = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -80,7 +101,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Center(
           child: SingleChildScrollView(
             child: Form(
-              key: formKey,
+              key: JosKeys3,
               child: Column(
                 children: [
                   const SizedBox(
@@ -118,9 +139,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   ),
                   Text(
-                  user.email!,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
+                    user.email!,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -159,43 +180,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                   ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 26),
-                  //   child: Container(
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //       child: TextFormField(
-                  //           controller: email,
-                  //           decoration: InputDecoration(
-                  //             prefixIcon: Icon(Icons.email),
-                  //             hintText: 'Email',
-                  //             contentPadding: EdgeInsets.symmetric(
-                  //                 vertical: 10, horizontal: 20),
-                  //             border: OutlineInputBorder(
-                  //               borderRadius: BorderRadius.all(
-                  //                 Radius.circular(10),
-                  //               ),
-                  //             ),
-                  //             enabledBorder: OutlineInputBorder(
-                  //               borderSide:
-                  //                   BorderSide(color: Colors.grey, width: 1),
-                  //               borderRadius: BorderRadius.all(
-                  //                 Radius.circular(10),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //           validator: (v) {
-                  //             if (v!.isEmpty) {
-                  //               return 'Enter your Email';
-                  //             }
-                  //             return null;
-                  //           }),
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -246,7 +230,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: Text('Save'),
                     onPressed: () async {
                       //await addData();
-                      if (formKey.currentState!.validate()) {
+                      if (JosKeys3.currentState!.validate()) {
                         SystemChannels.textInput
                             .invokeListMethod('TextInput.hide');
 
@@ -254,8 +238,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ? ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('select profile pic')))
                             : saveInfo();
+                        navigateToScreen();
                       }
                     },
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -268,8 +256,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.canPop(context) ? Navigator.pop(context) : null;
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => RegistrationScreen()));
                     },
                   )
                 ],
@@ -322,317 +312,3 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AOUbackground,
-//       appBar: AppBar(
-//         backgroundColor: AOUAppBar,
-//         leading: IconButton(
-//             onPressed: () {},
-//             icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
-//         title: Text('Profile', style: Theme.of(context).textTheme.headline4),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Container(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Column(
-//             children: [
-//               Stack(
-//                 children: [
-//                   SizedBox(
-//                     width: 120,
-//                     height: 120,
-//                     child: ClipRRect(
-//                       borderRadius: BorderRadius.circular(100),
-//                       child: const Image(
-//                         image: AssetImage(AOUlogo),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     bottom: 0,
-//                     right: 0,
-//                     child: Container(
-//                       width: 35,
-//                       height: 35,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(100),
-//                         color: Colors.grey.withOpacity(0.1),
-//                       ),
-//                       child: const Icon(
-//                         LineAwesomeIcons.alternate_pencil,
-//                         size: 20,
-//                         color: AOUAppBar,
-//                       ),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//               const SizedBox(height: 10),
-//               Text(
-//                 'Name',
-//                 style: Theme.of(context).textTheme.headlineSmall,
-//               ),
-//               Text(
-//                 'E-mail',
-//                 style: Theme.of(context).textTheme.headline6,
-//               ),
-//               const SizedBox(height: 20),
-//               SizedBox(
-//                   width: 200,
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       Navigator.pushNamed(
-//                           context, UpdateProfileScreen.screenRoute);
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                         backgroundColor: AOUAppBar,
-//                         side: BorderSide.none,
-//                         shape: const StadiumBorder()),
-//                     child: const Text(
-//                       'Edit profile',
-//                       style: TextStyle(color: Colors.white),
-//                     ),
-//                   )
-//                   //MyButton(title: 'Edit Profile', onPressed: () {}),
-//                   ),
-//               const SizedBox(
-//                 height: 30,
-//               ),
-//               // const Divider(),
-//               // const SizedBox(
-//               //   height: 10,
-//               // ),
-//               // ProfileMenuWidget(
-//               //   title: 'Setting',
-//               //   icon: LineAwesomeIcons.cog,
-//               //   onPress: () {},
-//               // ),
-//               // ProfileMenuWidget(
-//               //   title: 'Billing Details',
-//               //   icon: LineAwesomeIcons.wallet,
-//               //   onPress: () {},
-//               // ),
-//               // ProfileMenuWidget(
-//               //   title: 'User Managment',
-//               //   icon: LineAwesomeIcons.user_check,
-//               //   onPress: () {},
-//               // ),
-//               // const Divider(
-//               //   color: Colors.grey,
-//               // ),
-//               // const SizedBox(
-//               //   height: 10,
-//               // ),
-//               // ProfileMenuWidget(
-//               //   title: 'Infotmation',
-//               //   icon: LineAwesomeIcons.info,
-//               //   onPress: () {},
-//               // ),
-//               ProfileMenuWidget(
-//                 title: 'Logout',
-//                 icon: LineAwesomeIcons.alternate_sign_out,
-//                 textColor: Colors.red,
-//                 endIcon: false,
-//                 onPress: () {
-//                   FirebaseAuth.instance.signOut();
-//                 },
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
