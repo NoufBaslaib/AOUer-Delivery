@@ -1,27 +1,28 @@
 import 'package:delivery/auth/auth.dart';
-//import 'package:delivery/screens/gorder.dart';
-//import 'package:delivery/screens/order_page.dart';
+import 'package:delivery/screens/previous_orders.dart';
 import 'package:delivery/screens/price_page.dart';
 import 'package:delivery/screens/profile_screen.dart';
 import 'package:delivery/screens/log_in.dart';
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/otp_screen.dart';
 import 'package:delivery/screens/edit_profile_screen.dart';
+import 'package:delivery/screens/rate_customer_screen.dart';
 import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:delivery/screens/receive_prices.dart';
 import 'package:delivery/screens/registration_screen.dart';
 import 'package:delivery/screens/reset_pw_screen.dart';
-//import 'package:delivery/screens/show_prices.dart';
 import 'package:delivery/screens/sign_up.dart';
-//import 'package:delivery/screens/testing_type_order.dart';
-//import 'package:delivery/screens/tvieoworder.dart';
 import 'package:delivery/screens/type_order_screen.dart';
-//import 'package:delivery/screens/update_profile_screen.dart';
+import 'package:delivery/shared/app.dart';
+import 'package:delivery/shared/app2.dart';
 import 'package:delivery/utils/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/routes/default_transitions.dart';
+import 'shared/button_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,8 @@ void main() async {
   await UserPrefernces.init;
 
   runApp(const MyApp());
+  //runApp(const App());
+  //runApp(const App2());
 }
 
 class MyApp extends StatelessWidget {
@@ -55,7 +58,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: const ProfileScreen(),
       // home: const Auth(),
-      initialRoute: MapScreen.screenRoute,
+      initialRoute: ReceivePricesScreen.screenRoute,
       routes: {
         WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
@@ -72,7 +75,12 @@ class MyApp extends StatelessWidget {
         RateScreen.screenRoute: (context) => RateScreen(),
         ReceiveOrderPage.screenRoute: (context) => ReceiveOrderPage(),
         ReceivePricesScreen.screenRoute: (context) => ReceivePricesScreen(),
+        PreviousOrdersScreen.screenRoute: (context) => PreviousOrdersScreen(),
+        RateCustomerScreen.screenRoute: (context) => RateCustomerScreen(),
+        App.screenRoute: (context) => App(),
+        App2.screenRoute: (context) => App2(),
       },
     );
   }
 }
+
