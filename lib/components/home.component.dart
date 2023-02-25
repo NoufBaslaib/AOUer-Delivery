@@ -8,11 +8,12 @@ import 'package:animated_card_input/shared/widgets/spacing.widget.dart';*/
 import 'package:delivery/components/card_back.component.dart';
 import 'package:delivery/components/card_front.component.dart';
 import 'package:delivery/components/form.component.dart';
+import 'package:delivery/constract/color_string.dart';
 import 'package:delivery/shared/interfaces/orientation.interface.dart';
 import 'package:delivery/shared/widgets/spacing.widget.dart';
 import 'package:delivery/components/card_back.component.dart';
 import 'package:flutter/material.dart';
-
+import '../constract/color_string.dart';
 import 'form.component.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          backgroundColor: const Color.fromRGBO(32, 206, 202, 1),
+          backgroundColor: AOUAppBar,
         ),
         body: Column(
           children: [

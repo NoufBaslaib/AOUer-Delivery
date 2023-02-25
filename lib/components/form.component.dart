@@ -63,7 +63,9 @@ Widget cardTitle(_flip) {
         onTap: _flip,
         child: const Text('Flip card',
             style: TextStyle(
-                fontSize: 15, color: Color.fromRGBO(32, 206, 202, 1))),
+              fontSize: 15,
+              color: Color.fromARGB(255, 211, 175, 175),
+            )),
       )
     ],
   );

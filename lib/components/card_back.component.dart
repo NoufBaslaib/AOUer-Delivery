@@ -17,8 +17,8 @@ Widget cardBack(BuildContext context, ValueNotifier<String> ccvNumber) {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color.fromRGBO(26, 168, 166, 1.0),
-            Color.fromRGBO(70, 227, 223, 1.0),
+            Color.fromARGB(255, 138, 128, 128),
+            Color.fromARGB(255, 223, 212, 212),
           ],
         ),
         borderRadius: BorderRadius.circular(12)),

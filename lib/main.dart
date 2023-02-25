@@ -1,4 +1,5 @@
 import 'package:delivery/auth/auth.dart';
+import 'package:delivery/screens/app3.dart';
 import 'package:delivery/screens/previous_orders.dart';
 import 'package:delivery/screens/price_page.dart';
 import 'package:delivery/screens/profile_screen.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: const ProfileScreen(),
       // home: const Auth(),
-      initialRoute: ReceivePricesScreen.screenRoute,
+      initialRoute: App3.screenRoute,
       routes: {
         WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
         RateCustomerScreen.screenRoute: (context) => RateCustomerScreen(),
         App.screenRoute: (context) => App(),
         App2.screenRoute: (context) => App2(),
+        App3.screenRoute:(context) => App3(),
       },
     );
   }

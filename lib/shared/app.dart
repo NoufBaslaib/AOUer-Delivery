@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: const MyHomePage(title: 'Flutter Card'),
+      home: const MyHomePage(title: 'Payment'),
     );
   }
 }
