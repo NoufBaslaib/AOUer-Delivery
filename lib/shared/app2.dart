@@ -22,9 +22,9 @@ import 'package:delivery/shared/my_button2.dart';
   runApp(const MyApp());
 }*/
 //form_card_input_component
-class App2 extends StatelessWidget {
+class PaymentScreen extends StatelessWidget {
   static const String screenRoute = 'app2';
-  const App2({Key? key}) : super(key: key);
+  const PaymentScreen({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override

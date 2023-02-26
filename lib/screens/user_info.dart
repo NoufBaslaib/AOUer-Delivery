@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'style.dart';
 
-class App3 extends StatelessWidget {
+class ContInfo extends StatelessWidget {
   static const String screenRoute = 'app3';
 
   @override

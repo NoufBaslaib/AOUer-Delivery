@@ -2,10 +2,10 @@
 import 'package:delivery/components/home.component.dart';
 import 'package:flutter/material.dart';
 
-class App extends StatelessWidget {
+class CreditScreen extends StatelessWidget {
   static const String screenRoute = 'app.dart';
 
-  const App({Key? key}) : super(key: key);
+  const CreditScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: const MyHomePage(title: 'Payment'),
+      home: const MyHomePage(title: 'Credit Card'),
     );
   }
 }
