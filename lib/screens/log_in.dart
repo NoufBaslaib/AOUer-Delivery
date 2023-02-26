@@ -60,7 +60,7 @@ class _loginScreenState extends State<loginScreen> {
                 Navigator.pushNamed(context, WelcomeScreen.screenRoute);
               },
               icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
-          title: Text('Sign Up', style: Theme.of(context).textTheme.headline4),
+          title: Text('log in', style: Theme.of(context).textTheme.headline4),
         ),
         body: SafeArea(
           child: Center(

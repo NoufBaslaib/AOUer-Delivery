@@ -11,7 +11,7 @@ Widget ccv(BuildContext context, ValueNotifier<String> ccvNumber) {
     width: MediaQuery.of(context).size.width - 100,
     height: 50,
     child: Container(
-      color: const Color.fromRGBO(101, 232, 229, 1.0),
+      color: Color.fromARGB(255, 188, 179, 179),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
