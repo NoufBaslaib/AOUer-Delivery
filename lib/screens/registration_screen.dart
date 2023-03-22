@@ -41,7 +41,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             MyButton(
               title: 'Login',
               onPressed: () {
-                Navigator.pushNamed(context, loginScreen.screenRoute);
+                Navigator.pushNamed(context, LoginScreen.screenRoute);
               },
             ),
             MyButton(

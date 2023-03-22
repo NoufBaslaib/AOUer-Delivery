@@ -1,9 +1,15 @@
 import 'dart:io';
-import 'package:delivery/screens/map_sceaan.dart';
-import 'package:delivery/screens/reset_pw_screen.dart';
-import 'package:delivery/screens/welcome_screen.dart';
-import 'package:delivery/widgets/my_button.dart';
-import 'package:delivery/widgets/_feiled_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/screens/recieve_order_page.dart';
+import 'package:delivery/screens/receive_prices.dart';
+import 'package:delivery/screens/type_order_screen.dart';
+
+import 'edit_profile_screen.dart';
+import 'map_sceaan.dart';
+import 'reset_pw_screen.dart';
+import 'welcome_screen.dart';
+import '../widgets/my_button.dart';
+import '../widgets/_feiled_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -11,15 +17,15 @@ import '../constract/color_string.dart';
 import '../constract/image_string.dart';
 import '../widgets/fill_password.dart';
 
-class loginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   static const String screenRoute = 'log_in';
-  const loginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
-  State<loginScreen> createState() => _loginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _loginScreenState extends State<loginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final JosKeys4 = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -30,9 +36,7 @@ class _loginScreenState extends State<loginScreen> {
   //log in function
   Future signIn() async {
     try {
-      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       {
         print(e);
@@ -78,8 +82,7 @@ class _loginScreenState extends State<loginScreen> {
                       // ignore: prefer_const_constructors
                       Text(
                         'log in',
-                        style: const TextStyle(
-                            fontSize: (30), fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: (30), fontWeight: FontWeight.bold),
                       ),
                       // ignore: prefer_const_constructors
                       SizedBox(
@@ -96,16 +99,14 @@ class _loginScreenState extends State<loginScreen> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.email),
                                 hintText: 'Enter your Email',
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
+                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10),
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1),
+                                  borderSide: BorderSide(color: Colors.grey, width: 1),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10),
                                   ),
@@ -131,16 +132,14 @@ class _loginScreenState extends State<loginScreen> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.lock),
                                 hintText: 'Enter your password',
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
+                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10),
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1),
+                                  borderSide: BorderSide(color: Colors.grey, width: 1),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10),
                                   ),
@@ -172,11 +171,25 @@ class _loginScreenState extends State<loginScreen> {
                             setState(() {});
                             if (JosKeys4.currentState!.validate()) {
                               try {
-                                await FirebaseAuth.instance
-                                    .signInWithEmailAndPassword(
-                                        email: _emailController.text,
-                                        password: _passwordController.text);
+                                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                );
                                 errorMessage = '';
+
+                                final DocumentSnapshot<Map<String, dynamic>> ref = await FirebaseFirestore.instance.collection('customers').doc(FirebaseAuth.instance.currentUser!.uid).get();
+
+                                if (ref.data() == null) {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    ReceiveOrderPage.screenRoute,
+                                  );
+                                } else {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    TypeOrder.screenRoute,
+                                  );
+                                }
                               } on FirebaseAuthException catch (error) {
                                 errorMessage = error.message!;
                               }
@@ -185,9 +198,7 @@ class _loginScreenState extends State<loginScreen> {
                           },
                           child: Container(
                             padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(12)),
+                            decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(12)),
                             child: Center(
                               child: Text('Log in'),
                             ),
@@ -200,14 +211,9 @@ class _loginScreenState extends State<loginScreen> {
                       GestureDetector(
                         child: Text(
                           'forget your password?',
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Color.fromARGB(255, 192, 97, 125),
-                              fontSize: 15),
+                          style: TextStyle(decoration: TextDecoration.underline, color: Color.fromARGB(255, 192, 97, 125), fontSize: 15),
                         ),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => ResetScreen())),
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetScreen())),
                       )
                     ],
                   ),

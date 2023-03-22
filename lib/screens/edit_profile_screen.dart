@@ -2,35 +2,23 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
 import 'package:delivery/constract/image_string.dart';
-import 'package:delivery/screens/map_sceaan.dart';
-import 'package:delivery/screens/profile_screen.dart';
+import 'package:delivery/screens/recieve_order_page.dart';
 import 'package:delivery/screens/registration_screen.dart';
-import 'package:delivery/screens/sign_up.dart';
 import 'package:delivery/screens/type_order_screen.dart';
-import 'package:delivery/screens/welcome_screen.dart';
-import 'package:delivery/utils/user_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:delivery/model/user.dart';
-import '../widgets/Edit_profile_button.dart';
-import '../widgets/profile_menu.dart';
-import '../widgets/profile_widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:collection/collection.dart';
-import 'dart:collection';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditProfileScreen extends StatefulWidget {
   var userType;
+
   EditProfileScreen({required this.userType});
+
   static const screenRoute = 'edit_profile_screen';
+  String id = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -42,36 +30,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController phone = TextEditingController();
   final JosKeys3 = GlobalKey<FormState>();
 
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (FirebaseAuth.instance.currentUser!.displayName == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('please comblete the profile first')));
-      } else {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get()
-            .then((DocumentSnapshot<Map<String, dynamic>> snapshot) {
-          name.text = snapshot['name'];
-          phone.text = snapshot['phone'];
-          profilePic = snapshot['profilePic'];
-        });
-      }
-    });
-
-    super.initState();
-  }
-
   void navigateToScreen() {
     print('Value of widget.userType:${widget.userType}');
-    print('hi');
     if (widget.userType == 'customer') {
       print('meow');
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MapScreen(),
+          builder: (context) => TypeOrder(
+            name: name.text,
+            phoneNumber: phone.text,
+          ),
         ),
       );
       print('nouf');
@@ -79,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => TypeOrder(),
+          builder: (context) => ReceiveOrderPage(),
         ),
       );
     }
@@ -92,9 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AOUAppBar,
-        leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
+        leading: IconButton(onPressed: () {}, icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
         title: Text('Profile', style: Theme.of(context).textTheme.headline4),
       ),
       body: SafeArea(
@@ -111,8 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () async {
-                        final XFile? pickImage = await ImagePicker().pickImage(
-                            source: ImageSource.gallery, imageQuality: 50);
+                        final XFile? pickImage = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 50);
 
                         if (pickImage != null) {
                           setState(() {
@@ -155,16 +121,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.email),
                             hintText: 'Name',
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 1),
+                              borderSide: BorderSide(color: Colors.grey, width: 1),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
                               ),
@@ -193,16 +157,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.phone),
                               hintText: 'Phone number',
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10),
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
+                                borderSide: BorderSide(color: Colors.grey, width: 1),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10),
                                 ),
@@ -221,24 +183,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
-                        shape: StadiumBorder(),
-                        onPrimary: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.grey, shape: StadiumBorder(), onPrimary: Colors.white, padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
                     child: Text('Save'),
                     onPressed: () async {
                       //await addData();
                       if (JosKeys3.currentState!.validate()) {
-                        SystemChannels.textInput
-                            .invokeListMethod('TextInput.hide');
+                        SystemChannels.textInput.invokeListMethod('TextInput.hide');
 
-                        profilePic == null
-                            ? ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('select profile pic')))
-                            : saveInfo();
-                        navigateToScreen();
+                        if (profilePic == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('select profile pic')));
+                        } else {
+                          saveInfo();
+                          navigateToScreen();
+                        }
                       }
                     },
                   ),
@@ -246,20 +203,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
-                        shape: StadiumBorder(),
-                        onPrimary: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.grey, shape: StadiumBorder(), onPrimary: Colors.white, padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
                     child: Text('Sign Out'),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.canPop(context) ? Navigator.pop(context) : null;
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => RegistrationScreen()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RegistrationScreen()));
                     },
                   )
                 ],
@@ -272,12 +221,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   String? downloadUrl;
+
   Future<String?> uploadImage(File filepath, String? reference) async {
     try {
-      final finalName =
-          '${FirebaseAuth.instance.currentUser!.uid}${DateTime.now().second}';
-      final Reference fbStorage =
-          FirebaseStorage.instance.ref(reference).child(finalName);
+      final finalName = '${FirebaseAuth.instance.currentUser!.uid}${DateTime.now().second}';
+      final Reference fbStorage = FirebaseStorage.instance.ref(reference).child(finalName);
       final UploadTask uploadTask = fbStorage.putFile(filepath);
       await uploadTask.whenComplete(() async {
         downloadUrl = await fbStorage.getDownloadURL();
@@ -291,24 +239,51 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   saveInfo() async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    await firebaseFirestore.collection('users');
-    uploadImage(File(profilePic!), 'profile').whenComplete(() {
-      Map<String, dynamic> data = {
-        'name': name.text,
-        //'email': email.text,
-        'phone': phone.text,
-        'profilePic': downloadUrl
-      };
-
-      //when i need this information for checkout:
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set(data)
-          .whenComplete(() {
-        FirebaseAuth.instance.currentUser!.updateDisplayName(name.text);
+    if (widget.userType == 'driver') {
+      var collectionRef = FirebaseFirestore.instance.collection('drivers');
+      var documentId = FirebaseAuth.instance.currentUser!.uid;
+      var documentRef = collectionRef.doc(documentId);
+      uploadImage(File(profilePic!), 'profile').whenComplete(() {
+        documentRef.update({
+          'name': name.text,
+          'phone': phone.text,
+          'id': widget.id,
+          'profilePic': downloadUrl,
+        });
       });
-    });
+    } else if (widget.userType == 'customer') {
+      var collectionRef = FirebaseFirestore.instance.collection('customers');
+      var documentId = FirebaseAuth.instance.currentUser!.uid;
+      var documentRef = collectionRef.doc(documentId);
+      uploadImage(File(profilePic!), 'profile').whenComplete(() {
+        documentRef.update({
+          'name': name.text,
+          'phone': phone.text,
+          'id': widget.id,
+          'profilePic': downloadUrl,
+        });
+      });
+    }
+    // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    // if(widget.userType == 'driver'){
+    //   await firebaseFirestore.collection('drivers');
+    //   uploadImage(File(profilePic!), 'profile').whenComplete(() {
+    //     Map<String, dynamic> data = {
+    //       'name': name.text,
+    //       'email': user.email!,
+    //       'phone': phone.text,
+    //       'id' : widget.id,
+    //       'profilePic': downloadUrl
+    //     };
+    //
+    //     //when i need this information for checkout:
+    //     FirebaseFirestore.instance
+    //         .collection('drivers')
+    //         .doc(FirebaseAuth.instance.currentUser!.uid)
+    //         .set(data)
+    //         .whenComplete(() {
+    //       FirebaseAuth.instance.currentUser!.updateDisplayName(name.text);
+    //     });
+    //   });
   }
 }
