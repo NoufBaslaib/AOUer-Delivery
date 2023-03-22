@@ -53,6 +53,7 @@ dependencies:
   package_info_plus: ^3.0.3
   cloud_firestore: ^4.3.2
   firebase_database: ^10.0.10
+  flutter_toastr: ^1.0.3
   
   
   

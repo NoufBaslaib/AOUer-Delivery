@@ -1,20 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
+import 'package:delivery/constract/helpers.dart';
+import 'package:delivery/screens/type_order_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../constract/image_string.dart';
 
-class RateScreen extends StatefulWidget {
+class RateDriverScreen extends StatefulWidget {
   static const screenRoute = 'rate_driver_screen';
 
-  const RateScreen({super.key});
+  const RateDriverScreen({super.key, required this.driverID});
+
+  final String driverID;
 
   @override
-  State<RateScreen> createState() => _RateScreenState();
+  State<RateDriverScreen> createState() => _RateDriverScreenState();
 }
 
-class _RateScreenState extends State<RateScreen> {
+class _RateDriverScreenState extends State<RateDriverScreen> {
   double rating = 0;
 
   Widget buildRating() => RatingBar.builder(
@@ -37,14 +44,8 @@ class _RateScreenState extends State<RateScreen> {
       backgroundColor: AOUbackground,
       appBar: AppBar(
         backgroundColor: AOUAppBar,
-        leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
-        title: const Text('Rate Driver',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold)),
+        leading: IconButton(onPressed: () {}, icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
+        title: const Text('Rate Driver', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Column(
@@ -73,8 +74,7 @@ class _RateScreenState extends State<RateScreen> {
                       Expanded(
                         child: Text(
                           'Your order has been arrived',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -98,12 +98,23 @@ class _RateScreenState extends State<RateScreen> {
                     height: 32,
                   ),
                   ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                    onPressed: () async {
+                      var driver = await FirebaseFirestore.instance.collection('drivers').get().then((QuerySnapshot snapshot) {
+                        //Here we get the document reference and return to the post variable.
+                        mPrint("DOCS ${snapshot.docs}");
+                        return snapshot.docs[0].reference;
+                      });
+                      var batch = await driver.collection('ratings').add({
+                        'ratedBy': widget.driverID,
+                        'rating': rating.toString(),
+                      });
+
+                      FlutterToastr.show("Rating added successfully", context);
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TypeOrder(name: 'Name', phoneNumber: '03085098342')));
+                    },
                     child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                       child: Text(
                         'Submit Rating',
                         style: TextStyle(

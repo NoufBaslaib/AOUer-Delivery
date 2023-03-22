@@ -1,4 +1,5 @@
 import 'package:delivery/constract/image_string.dart';
+import 'package:delivery/screens/type_order_screen.dart';
 import 'package:delivery/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -35,11 +37,18 @@ class _MapScreenState extends State<MapScreen> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.canPop(context) ? Navigator.pop(context) : null;
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
                     },
                     color: Colors.grey,
                     child: Text('Sign out'),
+                  ),
+                  SizedBox(height: 50),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, TypeOrder.screenRoute);
+                    },
+                    color: Colors.white,
+                    child: Text('Order'),
                   ),
                 ],
               )

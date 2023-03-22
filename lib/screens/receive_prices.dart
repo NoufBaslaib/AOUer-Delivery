@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
+import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:delivery/screens/type_order_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+
+import '../constract/helpers.dart';
 
 class Price {
   final int value;
@@ -32,7 +37,9 @@ final List<Driver> drivers = [
 
 class ReceivePricesScreen extends StatelessWidget {
   static const String screenRoute = 'receive_price';
-  const ReceivePricesScreen({Key? key}) : super(key: key);
+  const ReceivePricesScreen({Key? key, required this.order}) : super(key: key);
+
+  final Map<String, dynamic> order;
 
   @override
   Widget build(BuildContext context) {
@@ -48,94 +55,119 @@ class ReceivePricesScreen extends StatelessWidget {
         ),
         title: const Text('Prices'),
       ),
-      body: ListView.builder(
-        itemCount: prices.length,
-        itemBuilder: (context, index) {
-          final price = prices[index];
-          final driver = drivers[index % drivers.length];
-          return SingleChildScrollView(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '\$${price.value}',
-                            style: const TextStyle(
-                                fontSize: 24.0, fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 167, 129, 162)),
-                                onPressed: () {
-                                  // Accept button action
-                                },
-                                child: const Text('Accept'),
-                              ),
-                              const SizedBox(width: 10),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey),
-                                onPressed: () {
-                                  // Decline button action
-                                },
-                                child: const Text('Decline'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16.0),
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(driver.photoUrl),
-                            radius: 30,
-                          ),
-                          const SizedBox(width: 16.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                driver.name,
-                                style: const TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Row(
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('orders').doc(order['order id']).collection('offerPrices').snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            mPrint("Order :: ${order}");
+
+            return snapshot.data!.docs.length == 0
+                ? Center(
+                    child: Text("No Prices received"),
+                  )
+                : ListView.builder(
+                    itemCount: snapshot.data!.size,
+                    itemBuilder: (context, index) {
+                      // final price = prices[index];
+                      // final driver = drivers[index % drivers.length];
+                      return SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.star,
-                                    size: 20.0,
-                                    color: Colors.amber,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '\$${snapshot.data!.docs[index].data()["price"]}',
+                                        style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      !snapshot.data!.docs[index].data()['isAccepted']
+                                          ? Row(
+                                              children: [
+                                                ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 167, 129, 162)),
+                                                  onPressed: () {
+                                                    // Accept button action
+                                                    FirebaseFirestore.instance.collection('orders').doc(order['order id']).collection('offerPrices').doc(snapshot.data!.docs[index].id).update(
+                                                      {
+                                                        'isAccepted': true,
+                                                      },
+                                                    );
+
+                                                    FlutterToastr.show('Order accepted.', context);
+
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (_) => RateDriverScreen(
+                                                          driverID: order['driverId'] ?? '',
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Text('Accept'),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                                                  onPressed: () {
+                                                    // Decline button action
+                                                    FirebaseFirestore.instance.collection('orders').doc(order['id']).collection('offerPrices').doc(snapshot.data!.docs[index].id).delete();
+                                                  },
+                                                  child: const Text('Decline'),
+                                                ),
+                                              ],
+                                            )
+                                          : Text("Accepted"),
+                                    ],
                                   ),
-                                  Text(driver.rating.toStringAsFixed(1)),
+                                  const SizedBox(height: 16.0),
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: NetworkImage("driver.photoUrl"),
+                                        radius: 30,
+                                      ),
+                                      const SizedBox(width: 16.0),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "driver.name",
+                                            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                size: 20.0,
+                                                color: Colors.amber,
+                                              ),
+                                              Text('3.5'),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+                        ),
+                      );
+                    },
+                  );
+          }),
     );
   }
 }

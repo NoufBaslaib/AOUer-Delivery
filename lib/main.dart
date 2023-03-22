@@ -1,23 +1,23 @@
-import 'package:delivery/auth/auth.dart';
-import 'package:delivery/screens/driver_info.dart';
-import 'package:delivery/screens/user_info.dart';
-import 'package:delivery/screens/previous_orders.dart';
-import 'package:delivery/screens/price_page.dart';
-import 'package:delivery/screens/profile_screen.dart';
-import 'package:delivery/screens/log_in.dart';
-import 'package:delivery/screens/map_sceaan.dart';
-import 'package:delivery/screens/otp_screen.dart';
-import 'package:delivery/screens/edit_profile_screen.dart';
-import 'package:delivery/screens/rate_customer_screen.dart';
-import 'package:delivery/screens/rate_driver_screen.dart';
-import 'package:delivery/screens/receive_prices.dart';
-import 'package:delivery/screens/registration_screen.dart';
-import 'package:delivery/screens/reset_pw_screen.dart';
-import 'package:delivery/screens/sign_up.dart';
-import 'package:delivery/screens/type_order_screen.dart';
-import 'package:delivery/shared/app.dart';
-import 'package:delivery/shared/app2.dart';
-import 'package:delivery/utils/user_preferences.dart';
+import 'auth/auth_page.dart';
+import 'screens/driver_info.dart';
+import 'screens/user_info.dart';
+import 'screens/previous_orders.dart';
+import 'screens/recieve_order_page.dart';
+import 'screens/profile_screen.dart';
+import 'screens/log_in.dart';
+import 'screens/map_sceaan.dart';
+import 'screens/otp_screen.dart';
+import 'screens/edit_profile_screen.dart';
+import 'screens/rate_customer_screen.dart';
+import 'screens/rate_driver_screen.dart';
+import 'screens/receive_prices.dart';
+import 'screens/registration_screen.dart';
+import 'screens/reset_pw_screen.dart';
+import 'screens/sign_up.dart';
+import 'screens/type_order_screen.dart';
+import 'shared/app.dart';
+import 'shared/app2.dart';
+import 'utils/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'screens/welcome_screen.dart';
@@ -47,44 +47,33 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "AOU'er Delivery",
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       //home: const ProfileScreen(),
-      // home: const Auth(),
-      initialRoute: PreviousOrdersScreen.screenRoute,
+      // home: MapScreen(),
+      home: const Auth(),
+      // initialRoute: PreviousOrdersScreen.screenRoute,
       routes: {
         WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
         SignUpScreen.screenRoute: (context) => SignUpScreen(),
-        loginScreen.screenRoute: (context) => loginScreen(),
+        LoginScreen.screenRoute: (context) => LoginScreen(),
         MapScreen.screenRoute: (context) => MapScreen(),
         ResetScreen.screenRoute: (context) => ResetScreen(),
         ProfileScreen.screenRoute: (context) => ProfileScreen(),
         OTPScreen.screenRoute: (context) => OTPScreen(),
-        EditProfileScreen.screenRoute: (context) => EditProfileScreen(
-              userType: '',
-            ),
-        TypeOrder.screenRoute: (context) => TypeOrder(),
-        RateScreen.screenRoute: (context) => RateScreen(),
+        EditProfileScreen.screenRoute: (context) => EditProfileScreen(userType: ''),
+        TypeOrder.screenRoute: (context) => TypeOrder(name: '', phoneNumber: ''),
+        RateDriverScreen.screenRoute: (context) => RateDriverScreen(driverID: ''),
         ReceiveOrderPage.screenRoute: (context) => ReceiveOrderPage(),
-        ReceivePricesScreen.screenRoute: (context) => ReceivePricesScreen(),
+        ReceivePricesScreen.screenRoute: (context) => ReceivePricesScreen(order: {}),
         PreviousOrdersScreen.screenRoute: (context) => PreviousOrdersScreen(),
-        RateCustomerScreen.screenRoute: (context) => RateCustomerScreen(),
+        RateCustomerScreen.screenRoute: (context) => RateCustomerScreen(customerId: ''),
         CreditScreen.screenRoute: (context) => CreditScreen(),
         PaymentScreen.screenRoute: (context) => PaymentScreen(),
-        ContInfo.screenRoute:(context) => ContInfo(),
-        DrivInfo.screenRoute:(context) => DrivInfo(),
+        ContInfo.screenRoute: (context) => ContInfo(),
+        DrivInfo.screenRoute: (context) => DrivInfo(),
       },
     );
   }
 }
-

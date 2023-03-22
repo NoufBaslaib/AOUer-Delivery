@@ -12,9 +12,11 @@ import '../widgets/fill_password.dart';
 import '../widgets/signup_fill_password.dart';
 import '../widgets/signup_text_field.dart';
 import '../widgets/_feiled_widget.dart';
+import 'home_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String screenRoute = 'sign_up';
+
   const SignUpScreen({super.key});
 
   @override
@@ -29,6 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var _userType = 'customer';
   String errorMessage = '';
 
+
   void _signUp() async {
     if (JosKeys4.currentState!.validate()) {
       JosKeys4.currentState!.save();
@@ -37,22 +40,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (_userType == 'driver') {
         print('Adding user data to drivers collection');
         // Add the user data to the 'drivers' collection in Firebase
-        final CollectionReference collection =
-            FirebaseFirestore.instance.collection('drivers');
-        await collection.add({
+        final DocumentReference<Map<String, dynamic>> collection =
+            FirebaseFirestore.instance.collection('drivers').doc(FirebaseAuth.instance.currentUser!.uid);
+        await collection.set({
           'email': _emailController.text,
-          'password': _passwordController.text
+          'password': _passwordController.text,
+          'id' : '',
+          'name': '',
+          'phone': '',
+          'profilePic': '',
+          'rating': '',
         });
         print('User data added to drivers collection');
       } else if (_userType == 'customer') {
         print('Adding user data to customers collection');
         // Add the user data to the 'customers' collection in Firebase
-        final CollectionReference collection =
-            FirebaseFirestore.instance.collection('customers');
-        await collection.add({
+        final DocumentReference<Map<String, dynamic>> collection =
+            FirebaseFirestore.instance.collection('customers').doc(FirebaseAuth.instance.currentUser!.uid);
+        await collection.set({
           'email': _emailController.text,
-          'password': _passwordController.text
+          'password': _passwordController.text,
+          'id' : '',
+          'name': '',
+          'phone': '',
+          'profilePic': '',
+          'rating': '',
         });
+
         print('User data added to customers collection');
       }
       // Get.to(EditProfileScreen(userType: _userType));
@@ -197,11 +211,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onPressed: () async {
                             setState(() {});
                             if (JosKeys4.currentState!.validate()) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfileScreen(
-                                          userType: _userType)));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => HomeNavBar(userType: _userType,)));
                               try {
                                 await FirebaseAuth.instance
                                     .createUserWithEmailAndPassword(
@@ -210,8 +223,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _signUp();
                                 print('the userType is=${_userType}');
                                 errorMessage = '';
-                                Navigator.of(context)
-                                    .pushNamed(EditProfileScreen.screenRoute);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomeNavBar(userType: _userType),
+                                  ),
+                                );
                               } on FirebaseAuthException catch (error) {
                                 errorMessage = error.message!;
                               }
