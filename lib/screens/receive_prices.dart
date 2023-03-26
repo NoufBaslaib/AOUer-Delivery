@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
-import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:delivery/screens/type_order_screen.dart';
+import 'package:delivery/screens/driver_Info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -37,7 +37,9 @@ final List<Driver> drivers = [
 
 class ReceivePricesScreen extends StatelessWidget {
   static const String screenRoute = 'receive_price';
-  const ReceivePricesScreen({Key? key, required this.order}) : super(key: key);
+
+
+   ReceivePricesScreen({Key? key, required this.order}) : super(key: key);
 
   final Map<String, dynamic> order;
 
@@ -56,7 +58,11 @@ class ReceivePricesScreen extends StatelessWidget {
         title: const Text('Prices'),
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('orders').doc(order['order id']).collection('offerPrices').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('orders')
+              .doc(order['order id'])
+              .collection('offerPrices')
+              .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Center(
@@ -75,42 +81,69 @@ class ReceivePricesScreen extends StatelessWidget {
                       // final driver = drivers[index % drivers.length];
                       return SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
                           child: Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '\$${snapshot.data!.docs[index].data()["price"]}',
-                                        style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                                        style: const TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      !snapshot.data!.docs[index].data()['isAccepted']
+                                      !snapshot.data!.docs[index]
+                                              .data()['isAccepted']
                                           ? Row(
                                               children: [
                                                 ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 167, 129, 162)),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  167,
+                                                                  129,
+                                                                  162)),
                                                   onPressed: () {
                                                     // Accept button action
-                                                    FirebaseFirestore.instance.collection('orders').doc(order['order id']).collection('offerPrices').doc(snapshot.data!.docs[index].id).update(
+                                                    FirebaseFirestore.instance
+                                                        .collection('orders')
+                                                        .doc(order['order id'])
+                                                        .collection(
+                                                            'offerPrices')
+                                                        .doc(snapshot.data!
+                                                            .docs[index].id)
+                                                        .update(
                                                       {
                                                         'isAccepted': true,
                                                       },
                                                     );
-
-                                                    FlutterToastr.show('Order accepted.', context);
-
+                                                    FirebaseFirestore.instance
+                                                        .collection('orders')
+                                                        .doc(order['order id'])
+                                                        .update(
+                                                      {
+                                                        'isAccepted': true,
+                                                      },
+                                                    );
+                                                    FlutterToastr.show(
+                                                        'Order accepted.',
+                                                        context);
+                                                    print('receive price ${order['driverId']}');
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (_) => RateDriverScreen(
-                                                          driverID: order['driverId'] ?? '',
-                                                        ),
+                                                        builder: (_) => DriverInfo(driverId:order['driverId'],orderId: order['order id']),
                                                       ),
                                                     );
                                                   },
@@ -118,10 +151,20 @@ class ReceivePricesScreen extends StatelessWidget {
                                                 ),
                                                 const SizedBox(width: 10),
                                                 ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.grey),
                                                   onPressed: () {
                                                     // Decline button action
-                                                    FirebaseFirestore.instance.collection('orders').doc(order['id']).collection('offerPrices').doc(snapshot.data!.docs[index].id).delete();
+                                                    FirebaseFirestore.instance
+                                                        .collection('orders')
+                                                        .doc(order['id'])
+                                                        .collection(
+                                                            'offerPrices')
+                                                        .doc(snapshot.data!
+                                                            .docs[index].id)
+                                                        .delete();
                                                   },
                                                   child: const Text('Decline'),
                                                 ),
@@ -134,16 +177,20 @@ class ReceivePricesScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage: NetworkImage("driver.photoUrl"),
+                                        backgroundImage:
+                                            NetworkImage("driver.photoUrl"),
                                         radius: 30,
                                       ),
                                       const SizedBox(width: 16.0),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "driver.name",
-                                            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                            style: const TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           Row(
                                             children: [
