@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../constract/color_string.dart';
+import 'customer_info.dart';
 import 'map_sceaan.dart';
-import 'rate_customer_screen.dart';
-import 'sign_up.dart';
 
 class ReceiveOrderPage extends StatefulWidget {
   static const String screenRoute = 'price_page';
@@ -32,7 +30,8 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
         leading: IconButton(
           onPressed: () {
             // Navigator.pushNamed(context, SignUpScreen.screenRoute);
-            Navigator.push(context, MaterialPageRoute(builder: (_) => MapScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => MapScreen()));
           },
           icon: const Icon(LineAwesomeIcons.arrow_circle_left),
         ),
@@ -48,7 +47,8 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
             child: ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                var order = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                var order =
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
 
                 return Padding(
                   padding: EdgeInsets.all(8.0),
@@ -61,7 +61,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             'Name : \t',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 22,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                           ),
@@ -69,7 +69,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             order['name'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 22,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                           ),
@@ -82,7 +82,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             'phoneNumber : ',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 22,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                           ),
@@ -90,7 +90,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             order['phone'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 22,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                           ),
@@ -103,7 +103,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             'Email : ',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 22,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                           ),
@@ -111,7 +111,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             order['email'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 22,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                           ),
@@ -162,26 +162,51 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                       MaterialButton(
                         onPressed: () async {
                           if (_deliveryPrice.trim().length == 0) return;
-
-                          await FirebaseFirestore.instance.collection('orders').doc(snapshot.data!.docs[index].id).collection('offerPrices').add({
+                          await FirebaseFirestore.instance
+                              .collection('orders')
+                              .doc(snapshot.data!.docs[index].id)
+                              .update({
+                            'driverId': FirebaseAuth.instance.currentUser!.uid
+                          });
+                          await FirebaseFirestore.instance
+                              .collection('orders')
+                              .doc(snapshot.data!.docs[index].id)
+                              .collection('offerPrices')
+                              .add({
                             'price': _deliveryPrice,
                             'isAccepted': false,
-                            'driverId': FirebaseAuth.instance.currentUser!.tenantId,
+                            'driverId': FirebaseAuth.instance.currentUser!.uid,
                           });
 
                           FlutterToastr.show("Price Sent", context);
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RateCustomerScreen(customerId: 'customerId'),
-                            ),
-                          );
-
+                          order['isAccepted'] == false
+                              ? ''
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CustomerInfo(
+                                        customerId: order['customerId'],
+                                        orderId: order['order id']),
+                                  ),
+                                );
                           // Scaffold.of(context).showBodyScrim(false, opacity)
                         },
                         child: Text('Send Delivery Price'),
                       ),
+                      SizedBox(height: 40),
+                      // MaterialButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (_) =>
+                      //             CustomerInfo(customerId: order['customerId'],orderId: order['order id']),
+                      //       ),
+                      //     );
+                      //     // Scaffold.of(context).showBodyScrim(false, opacity)
+                      //   },
+                      //   child: Text('Customer details'),
+                      // ),
                     ],
                   ),
                 );

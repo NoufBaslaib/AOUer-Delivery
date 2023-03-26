@@ -15,6 +15,7 @@ class TypeOrder extends StatefulWidget {
   TypeOrder({required this.name, required this.phoneNumber});
   final String name;
   final String phoneNumber;
+  String id = DateTime.now().microsecondsSinceEpoch.toString();
 
   @override
   State<TypeOrder> createState() => _TypeOrderState();
@@ -110,7 +111,8 @@ class _TypeOrderState extends State<TypeOrder> {
                         width: 200,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, PreviousOrdersScreen.screenRoute);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> PreviousOrdersScreen(
+                            )));
                           },
                           style: ElevatedButton.styleFrom(backgroundColor: Colors.black, side: BorderSide.none, shape: const StadiumBorder()),
                           child: const Text(
@@ -131,14 +133,16 @@ class _TypeOrderState extends State<TypeOrder> {
   }
 
   void sendOrderToDriver() async {
-    String id = DateTime.now().microsecondsSinceEpoch.toString();
-    final DocumentReference<Map<String, dynamic>> collection = FirebaseFirestore.instance.collection('orders').doc(id);
+    final DocumentReference<Map<String, dynamic>> collection = FirebaseFirestore.instance.collection('orders').doc(widget.id);
     if (_orderDetails == null) {
       print('type your order first');
     } else {
       await collection.set({
-        'order id': id,
+        'order id': widget.id,
         'customerId': user.uid,
+        'driverId' : '',
+        'bilPic': '',
+        'isAccepted': false,
         'customer name': widget.name,
         'customer phone no': widget.phoneNumber,
         'customer email': user.email,

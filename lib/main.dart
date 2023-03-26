@@ -1,6 +1,6 @@
 import 'auth/auth_page.dart';
-import 'screens/driver_info.dart';
-import 'screens/user_info.dart';
+import 'screens/customer_info.dart';
+import 'screens/driver_Info.dart';
 import 'screens/previous_orders.dart';
 import 'screens/recieve_order_page.dart';
 import 'screens/profile_screen.dart';
@@ -64,15 +64,14 @@ class MyApp extends StatelessWidget {
         OTPScreen.screenRoute: (context) => OTPScreen(),
         EditProfileScreen.screenRoute: (context) => EditProfileScreen(userType: ''),
         TypeOrder.screenRoute: (context) => TypeOrder(name: '', phoneNumber: ''),
-        RateDriverScreen.screenRoute: (context) => RateDriverScreen(driverID: ''),
         ReceiveOrderPage.screenRoute: (context) => ReceiveOrderPage(),
         ReceivePricesScreen.screenRoute: (context) => ReceivePricesScreen(order: {}),
         PreviousOrdersScreen.screenRoute: (context) => PreviousOrdersScreen(),
         RateCustomerScreen.screenRoute: (context) => RateCustomerScreen(customerId: ''),
         CreditScreen.screenRoute: (context) => CreditScreen(),
         PaymentScreen.screenRoute: (context) => PaymentScreen(),
-        ContInfo.screenRoute: (context) => ContInfo(),
-        DrivInfo.screenRoute: (context) => DrivInfo(),
+        DriverInfo.screenRoute: (context) => DriverInfo(),
+        CustomerInfo.screenRoute: (context) => CustomerInfo(),
       },
     );
   }

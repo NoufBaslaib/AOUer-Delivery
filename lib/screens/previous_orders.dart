@@ -8,6 +8,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 class PreviousOrdersScreen extends StatelessWidget {
   static const screenRoute = 'previous_orders';
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,10 @@ class PreviousOrdersScreen extends StatelessWidget {
         title: Text('Previous Orders'),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('orders').where('customerId', isEqualTo: getLoggedInUser().tenantId).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('orders')
+            .where('customerId', isEqualTo: getLoggedInUser().uid)
+            .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -35,20 +39,33 @@ class PreviousOrdersScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final order = snapshot.data!.docs[index]['order'];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: GestureDetector(
                   onTap: () {
-                    // print("ORDER :: ${}");
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => ReceivePricesScreen(order: snapshot.data!.docs[index].data())));
+                    print("ORDER :: ${order}");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ReceivePricesScreen(
+                          order: snapshot.data!.docs[index].data(),
+                        ),
+                      ),
+                    );
                   },
                   child: Center(
                     child: Container(
-                      decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(15)),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(15)),
                       width: 350,
                       child: ListTile(
                         title: Text(
                           order,
-                          style: TextStyle(color: Colors.black, fontSize: 18, fontFamily: 'Montserrat'),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Montserrat'),
                         ),
                         leading: Icon(Icons.shopping_cart),
                       ),
