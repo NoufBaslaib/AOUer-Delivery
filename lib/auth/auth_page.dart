@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/helpers.dart';
 import 'package:delivery/screens/log_in.dart';
 import 'package:delivery/screens/map_sceaan.dart';
-import 'package:delivery/screens/welcome_screen.dart';
+import 'package:delivery/screens/registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class Auth extends StatelessWidget {
           mPrint("Current User :: ${snapshot.data.toString()}");
           // if (!snapshot.data == null) return getLoading();
 
-          if (snapshot.data == null) return WelcomeScreen();
+          if (snapshot.data == null) return RegistrationScreen();
 
           return StreamBuilder(
             stream: FirebaseFirestore.instance.collection('customers').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),

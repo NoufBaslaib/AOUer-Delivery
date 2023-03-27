@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/screens/edit_profile_screen.dart';
 import 'package:delivery/screens/map_sceaan.dart';
-import 'package:delivery/screens/welcome_screen.dart';
 import 'package:delivery/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

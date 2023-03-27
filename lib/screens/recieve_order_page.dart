@@ -159,40 +159,58 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                           // onSaved: (value) => _deliveryPrice = value,
                         ),
                       ),
-                      MaterialButton(
-                        onPressed: () async {
-                          if (_deliveryPrice.trim().length == 0) return;
-                          await FirebaseFirestore.instance
-                              .collection('orders')
-                              .doc(snapshot.data!.docs[index].id)
-                              .update({
-                            'driverId': FirebaseAuth.instance.currentUser!.uid
-                          });
-                          await FirebaseFirestore.instance
-                              .collection('orders')
-                              .doc(snapshot.data!.docs[index].id)
-                              .collection('offerPrices')
-                              .add({
-                            'price': _deliveryPrice,
-                            'isAccepted': false,
-                            'driverId': FirebaseAuth.instance.currentUser!.uid,
-                          });
+                      if (order['isAccepted'] &&
+                          order['driverId'] ==
+                              FirebaseAuth.instance.currentUser?.uid)
+                        MaterialButton(
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => CustomerInfo(
+                                    customerId: order['customerId'],
+                                    orderId: order['order id']),
+                              ),
+                            );
+                          },
+                          child: Text('Show customer information'),
+                        )
+                      else
+                        MaterialButton(
+                          onPressed: () async {
+                            if (_deliveryPrice.trim().isEmpty) return;
+                            // await FirebaseFirestore.instance
+                            //     .collection('orders')
+                            //     .doc(snapshot.data!.docs[index].id)
+                            //     .update({
+                            //   'driverId': FirebaseAuth.instance.currentUser!.uid
+                            // });
+                            await FirebaseFirestore.instance
+                                .collection('orders')
+                                .doc(snapshot.data!.docs[index].id)
+                                .collection('offerPrices')
+                                .add({
+                              'price': _deliveryPrice,
+                              'isAccepted': false,
+                              'driverId':
+                                  FirebaseAuth.instance.currentUser!.uid,
+                            });
 
-                          FlutterToastr.show("Price Sent", context);
-                          order['isAccepted'] == false
-                              ? ''
-                              : Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => CustomerInfo(
-                                        customerId: order['customerId'],
-                                        orderId: order['order id']),
-                                  ),
-                                );
-                          // Scaffold.of(context).showBodyScrim(false, opacity)
-                        },
-                        child: Text('Send Delivery Price'),
-                      ),
+                            FlutterToastr.show("Price Sent", context);
+                            // order['isAccepted'] == false
+                            //     ? ''
+                            //     : Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (_) => CustomerInfo(
+                            //               customerId: order['customerId'],
+                            //               orderId: order['order id']),
+                            //         ),
+                            //       );
+                            // Scaffold.of(context).showBodyScrim(false, opacity)
+                          },
+                          child: Text('Send Delivery Price'),
+                        ),
                       SizedBox(height: 40),
                       // MaterialButton(
                       //   onPressed: () {

@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/screens/recieve_order_page.dart';
 import 'package:delivery/screens/receive_prices.dart';
+import 'package:delivery/screens/registration_screen.dart';
 import 'package:delivery/screens/type_order_screen.dart';
 
 import 'edit_profile_screen.dart';
 import 'map_sceaan.dart';
 import 'reset_pw_screen.dart';
-import 'welcome_screen.dart';
 import '../widgets/my_button.dart';
 import '../widgets/_feiled_widget.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final JosKeys4 = GlobalKey<FormState>();
+  final _JosKeys4 = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String errorMessage = '';
@@ -54,14 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: JosKeys4,
+      key: _JosKeys4,
       child: Scaffold(
         backgroundColor: AOUbackground,
         appBar: AppBar(
           backgroundColor: AOUAppBar,
           leading: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, WelcomeScreen.screenRoute);
+                Navigator.pushNamed(context, RegistrationScreen.screenRoute);
               },
               icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
           title: Text('log in', style: Theme.of(context).textTheme.headline4),
@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () async {
                             //next line to show loading also
                             setState(() {});
-                            if (JosKeys4.currentState!.validate()) {
+                            if (_JosKeys4.currentState!.validate()) {
                               try {
                                 await FirebaseAuth.instance.signInWithEmailAndPassword(
                                   email: _emailController.text.trim(),

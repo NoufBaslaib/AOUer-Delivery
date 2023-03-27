@@ -38,8 +38,7 @@ final List<Driver> drivers = [
 class ReceivePricesScreen extends StatelessWidget {
   static const String screenRoute = 'receive_price';
 
-
-   ReceivePricesScreen({Key? key, required this.order}) : super(key: key);
+  ReceivePricesScreen({Key? key, required this.order}) : super(key: key);
 
   final Map<String, dynamic> order;
 
@@ -79,6 +78,8 @@ class ReceivePricesScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       // final price = prices[index];
                       // final driver = drivers[index % drivers.length];
+
+                      final offer = snapshot.data!.docs[index].data();
                       return SingleChildScrollView(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -134,16 +135,23 @@ class ReceivePricesScreen extends StatelessWidget {
                                                         .update(
                                                       {
                                                         'isAccepted': true,
+                                                        'driverId': offer["driverId"],
                                                       },
                                                     );
                                                     FlutterToastr.show(
                                                         'Order accepted.',
                                                         context);
-                                                    print('receive price ${order['driverId']}');
+                                                    print(
+                                                        'receive price ${order['driverId']}');
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (_) => DriverInfo(driverId:order['driverId'],orderId: order['order id']),
+                                                        builder: (_) =>
+                                                            DriverInfo(
+                                                                driverId: order[
+                                                                    'driverId'],
+                                                                orderId: order[
+                                                                    'order id']),
                                                       ),
                                                     );
                                                   },
