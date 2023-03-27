@@ -20,7 +20,6 @@ import 'shared/app2.dart';
 import 'utils/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/default_transitions.dart';
@@ -54,7 +53,6 @@ class MyApp extends StatelessWidget {
       home: const Auth(),
       // initialRoute: PreviousOrdersScreen.screenRoute,
       routes: {
-        WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
         SignUpScreen.screenRoute: (context) => SignUpScreen(),
         LoginScreen.screenRoute: (context) => LoginScreen(),
@@ -62,12 +60,16 @@ class MyApp extends StatelessWidget {
         ResetScreen.screenRoute: (context) => ResetScreen(),
         ProfileScreen.screenRoute: (context) => ProfileScreen(),
         OTPScreen.screenRoute: (context) => OTPScreen(),
-        EditProfileScreen.screenRoute: (context) => EditProfileScreen(userType: ''),
-        TypeOrder.screenRoute: (context) => TypeOrder(name: '', phoneNumber: ''),
+        EditProfileScreen.screenRoute: (context) =>
+            EditProfileScreen(userType: ''),
+        TypeOrder.screenRoute: (context) =>
+            TypeOrder(name: '', phoneNumber: ''),
         ReceiveOrderPage.screenRoute: (context) => ReceiveOrderPage(),
-        ReceivePricesScreen.screenRoute: (context) => ReceivePricesScreen(order: {}),
+        ReceivePricesScreen.screenRoute: (context) =>
+            ReceivePricesScreen(order: {}),
         PreviousOrdersScreen.screenRoute: (context) => PreviousOrdersScreen(),
-        RateCustomerScreen.screenRoute: (context) => RateCustomerScreen(customerId: ''),
+        RateCustomerScreen.screenRoute: (context) =>
+            RateCustomerScreen(customerId: ''),
         CreditScreen.screenRoute: (context) => CreditScreen(),
         PaymentScreen.screenRoute: (context) => PaymentScreen(),
         DriverInfo.screenRoute: (context) => DriverInfo(),

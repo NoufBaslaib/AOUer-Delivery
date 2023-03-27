@@ -1,6 +1,7 @@
 import 'package:delivery/constract/image_string.dart';
+import 'package:delivery/screens/recieve_order_page.dart';
+import 'package:delivery/screens/registration_screen.dart';
 import 'package:delivery/screens/type_order_screen.dart';
-import 'package:delivery/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,10 @@ class _MapScreenState extends State<MapScreen> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.canPop(context) ? Navigator.pop(context) : null;
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => RegistrationScreen()));
                     },
                     color: Colors.grey,
                     child: Text('Sign out'),
@@ -45,7 +49,8 @@ class _MapScreenState extends State<MapScreen> {
                   SizedBox(height: 50),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, TypeOrder.screenRoute);
+                      Navigator.pushNamed(
+                          context, ReceiveOrderPage.screenRoute);
                     },
                     color: Colors.white,
                     child: Text('Order'),
