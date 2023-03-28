@@ -32,19 +32,17 @@ class ReceivePricesScreen extends StatelessWidget {
 
   final Map<String, dynamic> order;
 
-  getDriverD(driver_id) {
+  Future<Map<String, dynamic>> getDriverD(driver_id) async {
     driverDoc = FirebaseFirestore.instance.collection('drivers').doc(driver_id);
-    driverDoc.get().then((doc) {
-      if (doc.exists) {
-        // access the data here
-        driverData = doc.data();
-        mPrint('user data ${driverData}');
-      } else {
-        // handle non-existent document here
-        mPrint('no data found');
-      }
-    });
-    print(driverData['name']);
+    DocumentSnapshot doc = await driverDoc.get();
+    if (doc.exists) {
+      // access the data here
+      driverData = doc.data();
+      mPrint('user data ${driverData}');
+    } else {
+      // handle non-existent document here
+      mPrint('no data found');
+    }
     return driverData;
   }
 
@@ -82,11 +80,8 @@ class ReceivePricesScreen extends StatelessWidget {
                 : ListView.builder(
                     itemCount: snapshot.data!.size,
                     itemBuilder: (context, index) {
-                      // final price = prices[index];
-                      // final driver = drivers[index % drivers.length];
-
                       final offer = snapshot.data!.docs[index].data();
-                      getDriverD(offer["driverId"]);
+
                       return SingleChildScrollView(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -190,37 +185,54 @@ class ReceivePricesScreen extends StatelessWidget {
                                     ],
                                   ),
                                   const SizedBox(height: 16.0),
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            driverData?['profilePic']),
-                                        radius: 30,
-                                      ),
-                                      const SizedBox(width: 16.0),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            driverData?['name'],
-                                            style: const TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.star,
-                                                size: 20.0,
-                                                color: Colors.amber,
-                                              ),
-                                              Text('${driverData?['rating']}'),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  FutureBuilder<Map<String, dynamic>>(
+                                    future: getDriverD(offer["driverId"]),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Map<String, dynamic>>
+                                            snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      } else {
+                                        return Row(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  snapshot.data?['profilePic']),
+                                              radius: 30,
+                                            ),
+                                            const SizedBox(width: 16.0),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  snapshot.data?['name'] ?? '',
+                                                  style: const TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.star,
+                                                      size: 20.0,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    Text(
+                                                        '${snapshot.data?['rating']}...'),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    },
                                   ),
                                 ],
                               ),

@@ -11,7 +11,7 @@ import '../constract/image_string.dart';
 import 'style.dart';
 
 class CustomerInfo extends StatefulWidget {
-  static const String screenRoute = 'driver_info';
+  static const String screenRoute = 'customer_info';
   String? customerId;
   String? orderId;
 

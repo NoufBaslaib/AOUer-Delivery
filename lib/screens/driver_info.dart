@@ -15,7 +15,7 @@ class DriverInfo extends StatefulWidget {
 
   DriverInfo({this.driverId, this.orderId});
 
-  static const String screenRoute = 'app3';
+  static const String screenRoute = 'driver_info';
 
   @override
   State<DriverInfo> createState() => _DriverInfoState();
@@ -26,8 +26,9 @@ class _DriverInfoState extends State<DriverInfo> {
   bool isLoading = false;
 
   getCustomerData() async {
-    isLoading = true;
-    setState(() {});
+    setState(() {
+      isLoading = true;
+    });
 
     print('user ID ${widget.driverId}');
     final userDoc = await FirebaseFirestore.instance
@@ -38,14 +39,16 @@ class _DriverInfoState extends State<DriverInfo> {
         // access the data here
         userData = doc.data();
         setState(() {});
-// print('user data ${userData['name']}');
+        print('user data ${userData}');
       } else {
         // handle non-existent document here
+        print('no data found');
       }
     });
 
-    isLoading = false;
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -74,120 +77,118 @@ class _DriverInfoState extends State<DriverInfo> {
           ),
         ),
       ),
-      body: isLoading == true
-          ? Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Contact information',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Container(
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundColor: AOUbackground,
+                  child: Image.network(
+                    userData?['profilePic'] ?? "",
+                    fit: BoxFit.cover,
+                    height: 80,
+                    width: 80,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const SizedBox(
-                    height: 20,
+                  _buildContactItem(
+                    icon: Icons.person,
+                    title: 'Name',
+                    value: userData?['name'] ?? "",
                   ),
-                  Text(
-                    'Contact information',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+                  _buildContactItem(
+                    icon: Icons.phone,
+                    title: 'Phone Number',
+                    value: userData?['phone'] ?? "",
+                  ),
+                  Row(children: [
+                    Icon(Icons.chat_outlined, size: 40),
+                    SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        // Navigate to chat screen
+                      },
+                      child: Text("Chat", style: TextStyle(fontSize: 20)),
                     ),
+                  ]),
+                  SizedBox(
+                    height: 50,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  Row(children: [
+                    Icon(Icons.receipt_long, size: 40),
+                    SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ShowBillScreen(
+                              orderId: widget.orderId,
+                            ),
+                          ),
+                        );
+                      },
+                      child:
+                          Text("Show the bill", style: TextStyle(fontSize: 20)),
+                    ),
+                  ]),
+                  SizedBox(
+                    height: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              RateDriverScreen(driverID: 'driverId'),
+                        ),
+                      );
+                    },
                     child: Container(
-                      child: CircleAvatar(
-                        radius: 70,
-                        backgroundColor: AOUbackground,
-                        child: Image.network(
-                          userData?['profilePic'] ?? "",
-                          fit: BoxFit.cover,
-                          height: 80,
-                          width: 80,
-                        ),
-                      ),
+                      height: 50,
+                      width: 130,
+                      color: Colors.black,
+                      child: Center(
+                          child: Text(
+                        'Rate the driver',
+                        style: TextStyle(color: Colors.white),
+                      )),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildContactItem(
-                          icon: Icons.person,
-                          title: 'Name',
-                          value: userData?['name'] ?? "",
-                        ),
-                        _buildContactItem(
-                          icon: Icons.phone,
-                          title: 'Phone Number',
-                          value: userData?['phone'] ?? "",
-                        ),
-                        Row(children: [
-                          Icon(Icons.chat_outlined, size: 40),
-                          SizedBox(width: 8),
-                          InkWell(
-                            onTap: () {
-                              // Navigate to chat screen
-                            },
-                            child: Text("Chat", style: TextStyle(fontSize: 20)),
-                          ),
-                        ]),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Row(children: [
-                          Icon(Icons.receipt_long, size: 40),
-                          SizedBox(width: 8),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ShowBillScreen(
-                                    orderId: widget.orderId,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Text("Show the bill",
-                                style: TextStyle(fontSize: 20)),
-                          ),
-                        ]),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    RateDriverScreen(driverID: 'driverId'),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 130,
-                            color: Colors.black,
-                            child: Center(
-                                child: Text(
-                              'Rate the driver',
-                              style: TextStyle(color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 
