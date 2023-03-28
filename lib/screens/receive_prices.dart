@@ -8,6 +8,9 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../constract/helpers.dart';
 
+var driverDoc;
+var driverData;
+
 class Price {
   final int value;
 
@@ -22,25 +25,28 @@ class Driver {
   const Driver(this.name, this.photoUrl, this.rating);
 }
 
-final List<Price> prices = [
-  Price(5),
-  Price(20),
-  Price(30),
-  Price(50),
-];
-
-final List<Driver> drivers = [
-  Driver('John Doe', 'https://via.placeholder.com/150', 4.5),
-  Driver('Jane Smith', 'https://via.placeholder.com/150', 4.8),
-  Driver('Bob Johnson', 'https://via.placeholder.com/150', 4.2),
-];
-
 class ReceivePricesScreen extends StatelessWidget {
   static const String screenRoute = 'receive_price';
 
   ReceivePricesScreen({Key? key, required this.order}) : super(key: key);
 
   final Map<String, dynamic> order;
+
+  getDriverD(driver_id) {
+    driverDoc = FirebaseFirestore.instance.collection('drivers').doc(driver_id);
+    driverDoc.get().then((doc) {
+      if (doc.exists) {
+        // access the data here
+        driverData = doc.data();
+        mPrint('user data ${driverData}');
+      } else {
+        // handle non-existent document here
+        mPrint('no data found');
+      }
+    });
+    print(driverData['name']);
+    return driverData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +86,7 @@ class ReceivePricesScreen extends StatelessWidget {
                       // final driver = drivers[index % drivers.length];
 
                       final offer = snapshot.data!.docs[index].data();
+                      getDriverD(offer["driverId"]);
                       return SingleChildScrollView(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -135,7 +142,8 @@ class ReceivePricesScreen extends StatelessWidget {
                                                         .update(
                                                       {
                                                         'isAccepted': true,
-                                                        'driverId': offer["driverId"],
+                                                        'driverId':
+                                                            offer["driverId"],
                                                       },
                                                     );
                                                     FlutterToastr.show(
@@ -185,8 +193,8 @@ class ReceivePricesScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage("driver.photoUrl"),
+                                        backgroundImage: NetworkImage(
+                                            driverData?['profilePic']),
                                         radius: 30,
                                       ),
                                       const SizedBox(width: 16.0),
@@ -195,7 +203,7 @@ class ReceivePricesScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "driver.name",
+                                            driverData?['name'],
                                             style: const TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.bold),
@@ -207,7 +215,7 @@ class ReceivePricesScreen extends StatelessWidget {
                                                 size: 20.0,
                                                 color: Colors.amber,
                                               ),
-                                              Text('3.5'),
+                                              Text('${driverData?['rating']}'),
                                             ],
                                           ),
                                         ],
