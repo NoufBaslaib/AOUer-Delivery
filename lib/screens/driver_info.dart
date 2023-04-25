@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
+import 'package:delivery/screens/customer_chat_screen.dart';
 import 'package:delivery/screens/rate_customer_screen.dart';
 import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:delivery/screens/show_bill_screen.dart';
@@ -82,16 +83,16 @@ class _DriverInfoState extends State<DriverInfo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Contact information',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // Text(
+            //   'Contact information',
+            //   style: TextStyle(
+            //     fontSize: 40,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
             const SizedBox(
               height: 20,
             ),
@@ -111,7 +112,7 @@ class _DriverInfoState extends State<DriverInfo> {
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -133,6 +134,14 @@ class _DriverInfoState extends State<DriverInfo> {
                     SizedBox(width: 8),
                     InkWell(
                       onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CustomerChatScreen(
+                              orderId: widget.orderId ?? '',
+                            ),
+                          ),
+                        );
                         // Navigate to chat screen
                       },
                       child: Text("Chat", style: TextStyle(fontSize: 20)),
@@ -185,6 +194,9 @@ class _DriverInfoState extends State<DriverInfo> {
                   )
                 ],
               ),
+            ),
+            const SizedBox(
+              height: 30,
             ),
           ],
         ),

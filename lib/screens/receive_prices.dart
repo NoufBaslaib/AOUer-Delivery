@@ -145,13 +145,13 @@ class ReceivePricesScreen extends StatelessWidget {
                                                         'Order accepted.',
                                                         context);
                                                     print(
-                                                        'receive price ${order['driverId']}');
+                                                        'receive price ${offer['price']}');
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (_) =>
                                                             DriverInfo(
-                                                                driverId: order[
+                                                                driverId: offer[
                                                                     'driverId'],
                                                                 orderId: order[
                                                                     'order id']),

@@ -54,6 +54,8 @@ dependencies:
   cloud_firestore: ^4.3.2
   firebase_database: ^10.0.10
   flutter_toastr: ^1.0.3
+  google_maps_flutter: ^2.2.5
+  geolocator: ^9.0.2
   
   
   

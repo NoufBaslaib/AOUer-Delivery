@@ -6,13 +6,14 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../constract/color_string.dart';
 import '../model/global_key.dart';
+import 'choose_location_screen.dart';
 import 'map_sceaan.dart';
 import 'receive_prices.dart';
 
 class TypeOrder extends StatefulWidget {
   static const String screenRoute = 'type_order_screen';
 
-  TypeOrder({required this.name, required this.phoneNumber});
+  TypeOrder({required this.name, required this.phoneNumber, super.key});
   final String name;
   final String phoneNumber;
   String id = DateTime.now().microsecondsSinceEpoch.toString();
@@ -24,11 +25,11 @@ class TypeOrder extends StatefulWidget {
 class _TypeOrderState extends State<TypeOrder> {
   String? _orderDetails;
   final user = FirebaseAuth.instance.currentUser!;
-
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: JosKeys.JosKeys2,
+      key: formKey,
       child: Scaffold(
         backgroundColor: AOUbackground,
         appBar: AppBar(
@@ -43,7 +44,8 @@ class _TypeOrderState extends State<TypeOrder> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 150),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 150),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -71,14 +73,16 @@ class _TypeOrderState extends State<TypeOrder> {
                         onSaved: (value) => _orderDetails = value!,
                         decoration: InputDecoration(
                           hintText: 'Type your order here...',
-                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(10),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 1),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10),
                             ),
@@ -92,29 +96,87 @@ class _TypeOrderState extends State<TypeOrder> {
                       SizedBox(
                         width: 200,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (JosKeys.JosKeys2.currentState!.validate()) {
-                              JosKeys.JosKeys2.currentState!.save();
-                              sendOrderToDriver();
-                              Navigator.pushNamed(context, ReceivePricesScreen.screenRoute);
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                              var user = await FirebaseFirestore.instance
+                                  .collection('customers')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .get();
+                              var order = {
+                                'order id': widget.id,
+                                'customerId': user['id'],
+                                'driverId': '',
+                                'bilPic': '',
+                                'isAccepted': false,
+                                'customer name':user['name'],
+                                'customer phone no': user['phone'],
+                                'customer email': user['email'],
+                                'order': _orderDetails,
+                                'deliveryPrice': '',
+                                'location': user['location']
+                              };
+                              sendOrderToDriver(order);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ReceivePricesScreen(order: order),
+                                ),
+                              );
                             }
                           },
-                          style: ElevatedButton.styleFrom(backgroundColor: AOUAppBar, side: BorderSide.none, shape: const StadiumBorder()),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AOUAppBar,
+                              side: BorderSide.none,
+                              shape: const StadiumBorder()),
                           child: const Text(
                             'Send Order',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
-                      SizedBox(height: 50),
+                      SizedBox(
+                        height: 20,
+                      ),
                       SizedBox(
                         width: 200,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> PreviousOrdersScreen(
-                            )));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GoogleMapScreen(),
+                              ),
+                            );
                           },
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.black, side: BorderSide.none, shape: const StadiumBorder()),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AOUAppBar,
+                              side: BorderSide.none,
+                              shape: const StadiumBorder()),
+                          child: const Text(
+                            'Change Location',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        PreviousOrdersScreen()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              side: BorderSide.none,
+                              shape: const StadiumBorder()),
                           child: const Text(
                             'View Existing Orders',
                             style: TextStyle(color: Colors.white),
@@ -132,23 +194,13 @@ class _TypeOrderState extends State<TypeOrder> {
     );
   }
 
-  void sendOrderToDriver() async {
-    final DocumentReference<Map<String, dynamic>> collection = FirebaseFirestore.instance.collection('orders').doc(widget.id);
+  void sendOrderToDriver(Map<String, dynamic> order) async {
+    final DocumentReference<Map<String, dynamic>> collection =
+        FirebaseFirestore.instance.collection('orders').doc(widget.id);
     if (_orderDetails == null) {
       print('type your order first');
     } else {
-      await collection.set({
-        'order id': widget.id,
-        'customerId': user.uid,
-        'driverId' : '',
-        'bilPic': '',
-        'isAccepted': false,
-        'customer name': widget.name,
-        'customer phone no': widget.phoneNumber,
-        'customer email': user.email,
-        'order': _orderDetails,
-        'deliveryPrice': '',
-      });
+      await collection.set(order);
     }
   }
 }

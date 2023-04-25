@@ -61,7 +61,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                     });
                   },
                   child: Icon(
-                   Icons.person,
+                    Icons.person,
                     size: 30,
                     color: currentTab == 0 ? Colors.black : Colors.black38,
                   ),

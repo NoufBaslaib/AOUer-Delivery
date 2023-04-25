@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/image_string.dart';
 import 'package:delivery/screens/recieve_order_page.dart';
 import 'package:delivery/screens/registration_screen.dart';
@@ -48,9 +49,16 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                   SizedBox(height: 50),
                   MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, ReceiveOrderPage.screenRoute);
+                    onPressed: () async {
+                      var user = await FirebaseFirestore.instance
+                          .collection('customers')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .get();
+                      if (user.exists) {
+                        Navigator.pushNamed(context, TypeOrder.screenRoute);
+                      } else
+                        Navigator.pushNamed(
+                            context, ReceiveOrderPage.screenRoute);
                     },
                     color: Colors.white,
                     child: Text('Order'),

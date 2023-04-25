@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
+import 'package:delivery/screens/driver_chat_screen.dart';
 import 'package:delivery/screens/rate_customer_screen.dart';
 import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -41,6 +42,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
       if (doc.exists) {
         // access the data here
         userData = doc.data();
+        
         setState(() {});
         print('user data ${userData}');
       } else {
@@ -51,12 +53,13 @@ class _CustomerInfoState extends State<CustomerInfo> {
     setState(() {
       isLoading = false;
     });
+
+    return userData;
   }
 
   @override
   void initState() {
     super.initState();
-    getCustomerData();
   }
 
   String? downloadUrl;
@@ -87,7 +90,6 @@ class _CustomerInfoState extends State<CustomerInfo> {
       () => documentRef.update({
         'bilPic': downloadUrl.toString(),
       }),
-
     );
     // print('id :: ${widget.orderId}');
     // print('id :: ${bilPic}');
@@ -120,136 +122,147 @@ class _CustomerInfoState extends State<CustomerInfo> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Contact information',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Container(
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundColor: AOUbackground,
-                  child: Image.network(
-                    userData?['profilePic'] ?? "",
-                    fit: BoxFit.cover,
-                    height: 80,
-                    width: 80,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildContactItem(
-                    icon: Icons.person,
-                    title: 'Name',
-                    value: userData?['name'] ?? "",
-                  ),
-                  _buildContactItem(
-                    icon: Icons.phone,
-                    title: 'Phone Number',
-                    value: userData?['phone'] ?? "",
-                  ),
-                  Row(children: [
-                    Icon(Icons.chat_outlined, size: 40),
-                    SizedBox(width: 8),
-                    InkWell(
-                      onTap: () {
-                        // Navigate to chat screen
-                      },
-                      child: Text("Chat", style: TextStyle(fontSize: 20)),
+      body: FutureBuilder(
+          future: getCustomerData(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ]),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Row(children: [
-                    Icon(Icons.receipt_long, size: 40),
-                    SizedBox(width: 8),
-                    InkWell(
-                      onTap: () async {
-                        final XFile? pickImage = await ImagePicker().pickImage(
-                            source: ImageSource.gallery, imageQuality: 50);
-                        print('orderid :: ${widget.orderId}');
-
-                        if (pickImage != null) {
-                          setState(() {
-                            bilPic = pickImage.path.trim();
-                          });
-                        }
-                      },
-                      child: Text("take a picture of the bill",
-                          style: TextStyle(fontSize: 20)),
-                    ),
-                  ]),
-                  // SizedBox(height: 5),
-                  // Container(
-                  //   child: bilPic == null
-                  //       ? CircleAvatar(
-                  //     radius: 70,
-                  //     backgroundColor: Colors.grey,
-                  //     child: Image.asset(
-                  //       AOUlogo,
-                  //       height: 80,
-                  //       width: 80,
-                  //     ),
-                  //   )
-                  //       : CircleAvatar(
-                  //     radius: 70,
-                  //     backgroundImage: FileImage(File(bilPic!)),
-                  //   ),
-                  // ),
-                  SizedBox(height: 30),
-                  InkWell(
-                    onTap: () {
-                      updateOrder();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              RateCustomerScreen(
-                                  customerId: 'customerId'),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        child: CircleAvatar(
+                          radius: 70,
+                          backgroundColor: AOUbackground,
+                          child: Image.network(
+                            userData?['profilePic'] ?? "",
+                            fit: BoxFit.cover,
+                            height: 80,
+                            width: 80,
+                          ),
                         ),
-                      );
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 130,
-                      color: Colors.black,
-                      child: Center(
-                          child: Text(
-                        'Rate the customer',
-                        style: TextStyle(color: Colors.white),
-                      )),
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildContactItem(
+                            icon: Icons.person,
+                            title: 'Name',
+                            value: userData?['name'] ?? "",
+                          ),
+                          _buildContactItem(
+                            icon: Icons.phone,
+                            title: 'Phone Number',
+                            value: userData?['phone'] ?? "",
+                          ),
+                          Row(children: [
+                            Icon(Icons.chat_outlined, size: 40),
+                            SizedBox(width: 8),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DriverChatScreen(
+                                      orderId: widget.orderId ?? '',
+                                    ),
+                                  ),
+                                );
+                                // Navigate to chat screen
+                              },
+                              child:
+                                  Text("Chat", style: TextStyle(fontSize: 20)),
+                            ),
+                          ]),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Row(children: [
+                            Icon(Icons.receipt_long, size: 40),
+                            SizedBox(width: 8),
+                            InkWell(
+                              onTap: () async {
+                                final XFile? pickImage = await ImagePicker()
+                                    .pickImage(
+                                        source: ImageSource.gallery,
+                                        imageQuality: 50);
+                                print('orderid :: ${widget.orderId}');
+
+                                if (pickImage != null) {
+                                  setState(() {
+                                    bilPic = pickImage.path.trim();
+                                  });
+                                }
+                              },
+                              child: Text("take a picture of the bill",
+                                  style: TextStyle(fontSize: 20)),
+                            ),
+                          ]),
+                          // SizedBox(height: 5),
+                          // Container(
+                          //   child: bilPic == null
+                          //       ? CircleAvatar(
+                          //     radius: 70,
+                          //     backgroundColor: Colors.grey,
+                          //     child: Image.asset(
+                          //       AOUlogo,
+                          //       height: 80,
+                          //       width: 80,
+                          //     ),
+                          //   )
+                          //       : CircleAvatar(
+                          //     radius: 70,
+                          //     backgroundImage: FileImage(File(bilPic!)),
+                          //   ),
+                          // ),
+                          SizedBox(height: 30),
+                          InkWell(
+                            onTap: () {
+                              updateOrder();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => RateCustomerScreen(
+                                      customerId: 'customerId'),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 130,
+                              color: Colors.black,
+                              child: Center(
+                                  child: Text(
+                                'Rate the customer',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white),
+                              )),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+          }),
     );
   }
 
@@ -268,7 +281,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
             ),
             const SizedBox(width: 8),
             Text(
-              '$title: $value',
+              '$title:\n \t $value',
               style: TextStyle(
                 fontSize: 20,
               ),

@@ -7,10 +7,13 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../constract/color_string.dart';
 import 'customer_info.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
 import 'map_sceaan.dart';
 
 class ReceiveOrderPage extends StatefulWidget {
   static const String screenRoute = 'price_page';
+  const ReceiveOrderPage({super.key});
 
   @override
   _ReceiveOrderPageState createState() => _ReceiveOrderPageState();
@@ -66,7 +69,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             ),
                           ),
                           Text(
-                            order['name'] ?? '',
+                            order['customer name'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -87,7 +90,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             ),
                           ),
                           Text(
-                            order['phone'] ?? '',
+                            order['customer phone no'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -108,7 +111,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             ),
                           ),
                           Text(
-                            order['email'] ?? '',
+                            order['customer email'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -144,6 +147,32 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                           ),
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Location: ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          ElevatedButton(
+                              onPressed: () async {
+                                String googleUrl =
+                                    'https://www.google.com/maps/search/?api=1&query=${order['location']['latitude']},${order['location']['longitude']}';
+
+                                await launchUrlString(googleUrl,
+                                    mode: LaunchMode.externalApplication);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AOUAppBar,
+                              ),
+                              child: Text('open'))
+                        ],
+                      ),
+
                       Form(
                         // key: formKey,
                         child: TextField(
