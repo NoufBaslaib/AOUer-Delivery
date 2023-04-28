@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/helpers.dart';
-import 'package:delivery/screens/log_in.dart';
-import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/screens/registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +22,10 @@ class Auth extends StatelessWidget {
           if (snapshot.data == null) return RegistrationScreen();
 
           return StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('customers').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('customers')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
             builder: (_, snapshotType) {
               if (!snapshotType.hasData) return getLoading();
 
@@ -34,10 +35,7 @@ class Auth extends StatelessWidget {
                 // User
               } else {
                 var data = snapshotType.data!.data() as Map<String, dynamic>;
-                return TypeOrder(
-                  name: data['name'],
-                  phoneNumber: data['phone'],
-                );
+                return TypeOrder();
               }
             },
           );

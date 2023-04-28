@@ -233,9 +233,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        _userType == 'customer'
-                                            ? GoogleMapScreen()
-                                            : HomeNavBar(userType: _userType),
+                                        HomeNavBar(userType: _userType),
                                   ),
                                 );
                               } on FirebaseAuthException catch (error) {

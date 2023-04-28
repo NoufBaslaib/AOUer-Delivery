@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         EditProfileScreen.screenRoute: (context) =>
             EditProfileScreen(userType: ''),
         TypeOrder.screenRoute: (context) =>
-            TypeOrder(name: '', phoneNumber: ''),
+            TypeOrder(),
         ReceiveOrderPage.screenRoute: (context) => ReceiveOrderPage(),
         ReceivePricesScreen.screenRoute: (context) =>
             ReceivePricesScreen(order: {}),

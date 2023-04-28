@@ -110,7 +110,7 @@ class _RateDriverScreenState extends State<RateDriverScreen> {
                       });
 
                       FlutterToastr.show("Rating added successfully", context);
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TypeOrder(name: 'Name', phoneNumber: '03085098342')));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TypeOrder()));
                     },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),

@@ -130,8 +130,7 @@ class GgoogleMapScreenState extends State<GoogleMapScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          TypeOrder(name: '', phoneNumber: ''),
+                                      builder: (context) => TypeOrder(),
                                     ),
                                   );
                                 },

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
 import 'package:delivery/constract/image_string.dart';
+import 'package:delivery/screens/choose_location_screen.dart';
 import 'package:delivery/screens/recieve_order_page.dart';
 import 'package:delivery/screens/registration_screen.dart';
 import 'package:delivery/screens/type_order_screen.dart';
@@ -34,13 +35,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     print('Value of widget.userType:${widget.userType}');
     if (widget.userType == 'customer') {
       print('meow');
+
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => TypeOrder(
-            name: name.text,
-            phoneNumber: phone.text,
-          ),
+          builder: (context) => GoogleMapScreen(),
         ),
       );
       print('nouf');
@@ -61,7 +60,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AOUAppBar,
-        leading: IconButton(onPressed: () {}, icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
         title: Text('Profile', style: Theme.of(context).textTheme.headline4),
       ),
       body: SafeArea(
@@ -78,7 +79,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () async {
-                        final XFile? pickImage = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 50);
+                        final XFile? pickImage = await ImagePicker().pickImage(
+                            source: ImageSource.gallery, imageQuality: 50);
 
                         if (pickImage != null) {
                           setState(() {
@@ -121,14 +123,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.email),
                             hintText: 'Name',
-                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey, width: 1),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
                               ),
@@ -157,14 +161,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.phone),
                               hintText: 'Phone number',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10),
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey, width: 1),
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10),
                                 ),
@@ -183,15 +189,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.grey, shape: StadiumBorder(), onPrimary: Colors.white, padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        shape: StadiumBorder(),
+                        onPrimary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
                     child: Text('Save'),
                     onPressed: () async {
                       //await addData();
                       if (JosKeys3.currentState!.validate()) {
-                        SystemChannels.textInput.invokeListMethod('TextInput.hide');
+                        SystemChannels.textInput
+                            .invokeListMethod('TextInput.hide');
 
                         if (profilePic == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('select profile pic')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('select profile pic')));
                         } else {
                           saveInfo();
                           navigateToScreen();
@@ -203,12 +216,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.grey, shape: StadiumBorder(), onPrimary: Colors.white, padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        shape: StadiumBorder(),
+                        onPrimary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
                     child: Text('Sign Out'),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.canPop(context) ? Navigator.pop(context) : null;
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RegistrationScreen()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => RegistrationScreen()));
                     },
                   )
                 ],
@@ -224,8 +245,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<String?> uploadImage(File filepath, String? reference) async {
     try {
-      final finalName = '${FirebaseAuth.instance.currentUser!.uid}${DateTime.now().second}';
-      final Reference fbStorage = FirebaseStorage.instance.ref(reference).child(finalName);
+      final finalName =
+          '${FirebaseAuth.instance.currentUser!.uid}${DateTime.now().second}';
+      final Reference fbStorage =
+          FirebaseStorage.instance.ref(reference).child(finalName);
       final UploadTask uploadTask = fbStorage.putFile(filepath);
       await uploadTask.whenComplete(() async {
         downloadUrl = await fbStorage.getDownloadURL();

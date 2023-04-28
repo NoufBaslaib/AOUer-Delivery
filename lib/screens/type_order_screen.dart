@@ -13,9 +13,8 @@ import 'receive_prices.dart';
 class TypeOrder extends StatefulWidget {
   static const String screenRoute = 'type_order_screen';
 
-  TypeOrder({required this.name, required this.phoneNumber, super.key});
-  final String name;
-  final String phoneNumber;
+  TypeOrder();
+
   String id = DateTime.now().microsecondsSinceEpoch.toString();
 
   @override
