@@ -3,6 +3,7 @@ import 'package:delivery/screens/choose_location_screen.dart';
 import 'package:delivery/screens/edit_profile_screen.dart';
 import 'package:delivery/screens/map_sceaan.dart';
 import 'package:delivery/widgets/my_button.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -35,6 +36,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (JosKeys4.currentState!.validate()) {
       JosKeys4.currentState!.save();
 
+      String? deviceToken = " ";
+
+     
+        await FirebaseMessaging.instance.getToken().then((token) {
+          setState(() {
+            deviceToken = token;
+          });
+        });
+      
+
       // Check if the user selected 'driver' or 'customer' in the dropdown list
       if (_userType == 'driver') {
         print('Adding user data to drivers collection');
@@ -51,6 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'phone': '',
           'profilePic': '',
           'rating': '',
+          'deviceToken': deviceToken
         });
         print('User data added to drivers collection');
       } else if (_userType == 'customer') {
@@ -69,7 +81,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             'phone': '',
             'profilePic': '',
             'rating': '',
-            'location': {}
+            'location': {},
+            'deviceToken': deviceToken
           },
         );
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
-import 'package:delivery/screens/driver_chat_screen.dart';
+import 'package:delivery/screens/chat/driver_chat_screen.dart';
 import 'package:delivery/screens/rate_customer_screen.dart';
 import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -42,7 +42,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
       if (doc.exists) {
         // access the data here
         userData = doc.data();
-        
+
         setState(() {});
         print('user data ${userData}');
       } else {

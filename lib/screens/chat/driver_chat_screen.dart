@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/screens/chat/send_fcm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../constract/color_string.dart';
+import '../../constract/color_string.dart';
 
-class CustomerChatScreen extends StatefulWidget {
+class DriverChatScreen extends StatefulWidget {
   final String orderId;
-  const CustomerChatScreen({required this.orderId, super.key});
+  const DriverChatScreen({required this.orderId, super.key});
 
   @override
-  State<CustomerChatScreen> createState() => _CustomerChatScreenState();
+  State<DriverChatScreen> createState() => _DriverChatScreenState();
 }
 
-class _CustomerChatScreenState extends State<CustomerChatScreen> {
+class _DriverChatScreenState extends State<DriverChatScreen> {
   final chatTextController = TextEditingController();
 
   @override
@@ -99,10 +101,32 @@ class _CustomerChatScreenState extends State<CustomerChatScreen> {
                           width: 15,
                         ),
                         FloatingActionButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (chatTextController.text.isEmpty) {
                               return;
                             }
+                            var customerID = await FirebaseFirestore.instance
+                                .collection('orders')
+                                .doc(widget.orderId)
+                                .get();
+
+                            var customerDeviceID = await FirebaseFirestore
+                                .instance
+                                .collection('customers')
+                                .doc(customerID.data()!['customerId'])
+                                .get();
+
+                            var userID = FirebaseAuth.instance.currentUser!.uid;
+                            var user = await FirebaseFirestore.instance
+                                .collection('customers')
+                                .doc(userID)
+                                .get();
+
+                            await sendPushMessage(
+                                chatTextController.text,
+                                user.data()!['name'],
+                                customerDeviceID.data()!['deviceToken']);
+
                             FirebaseFirestore.instance
                                 .collection('orders')
                                 .doc(widget.orderId)
@@ -110,10 +134,11 @@ class _CustomerChatScreenState extends State<CustomerChatScreen> {
                                 .add(
                               {
                                 'message': chatTextController.text.trim(),
-                                'sender': 'customer',
+                                'sender': 'driver',
                                 'id': snapshot.data!.docs.length + 1
                               },
                             );
+
                             chatTextController.clear();
                           },
                           backgroundColor: Colors.blue,

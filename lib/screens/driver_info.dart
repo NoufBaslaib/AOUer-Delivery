@@ -2,12 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constract/color_string.dart';
-import 'package:delivery/screens/customer_chat_screen.dart';
-import 'package:delivery/screens/rate_customer_screen.dart';
 import 'package:delivery/screens/rate_driver_screen.dart';
 import 'package:delivery/screens/show_bill_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'chat/customer_chat_screen.dart';
 import 'style.dart';
 
 class DriverInfo extends StatefulWidget {

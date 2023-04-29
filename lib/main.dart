@@ -1,3 +1,5 @@
+import 'package:delivery/screens/chat/notification_service.dart';
+
 import 'auth/auth_page.dart';
 import 'screens/customer_info.dart';
 import 'screens/driver_Info.dart';
@@ -28,7 +30,7 @@ import 'shared/button_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  await NotificationService.init();
   await UserPrefernces.init;
 
   runApp(const MyApp());
@@ -62,8 +64,7 @@ class MyApp extends StatelessWidget {
         OTPScreen.screenRoute: (context) => OTPScreen(),
         EditProfileScreen.screenRoute: (context) =>
             EditProfileScreen(userType: ''),
-        TypeOrder.screenRoute: (context) =>
-            TypeOrder(),
+        TypeOrder.screenRoute: (context) => TypeOrder(),
         ReceiveOrderPage.screenRoute: (context) => ReceiveOrderPage(),
         ReceivePricesScreen.screenRoute: (context) =>
             ReceivePricesScreen(order: {}),
