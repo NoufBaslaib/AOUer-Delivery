@@ -3,6 +3,7 @@ import 'package:delivery/screens/previous_orders.dart';
 import 'package:flutter/material.dart';
 
 import '../constract/color_string.dart';
+import 'choose_location_screen.dart';
 import 'edit_profile_screen.dart';
 
 class HomeNavBar extends StatefulWidget {
@@ -26,7 +27,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
     super.initState();
     screens = [
       EditProfileScreen(userType: widget.userType),
-      MapScreen(),
+      GoogleMapScreen(),
       PreviousOrdersScreen(),
     ];
     currentScreen = screens[currentTab];

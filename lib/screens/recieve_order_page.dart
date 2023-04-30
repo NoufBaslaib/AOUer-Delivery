@@ -30,14 +30,14 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
       backgroundColor: AOUbackground,
       appBar: AppBar(
         backgroundColor: AOUAppBar,
-        leading: IconButton(
-          onPressed: () {
-            // Navigator.pushNamed(context, SignUpScreen.screenRoute);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => MapScreen()));
-          },
-          icon: const Icon(LineAwesomeIcons.arrow_circle_left),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     // Navigator.pushNamed(context, SignUpScreen.screenRoute);
+        //     Navigator.push(
+        //         context, MaterialPageRoute(builder: (_) => MapScreen()));
+        //   },
+        //   icon: const Icon(LineAwesomeIcons.arrow_circle_left),
+        // ),
         title: Text('Receive Order'),
       ),
       body: StreamBuilder<QuerySnapshot>(

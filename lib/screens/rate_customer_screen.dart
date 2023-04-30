@@ -6,6 +6,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../constract/color_string.dart';
 import '../constract/image_string.dart';
+import 'choose_location_screen.dart';
 import 'map_sceaan.dart';
 import 'recieve_order_page.dart';
 
@@ -46,7 +47,7 @@ class _RateCustomerScreenState extends State<RateCustomerScreen> {
         backgroundColor: AOUAppBar,
         leading: IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => MapScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => GoogleMapScreen()));
             },
             icon: const Icon(LineAwesomeIcons.arrow_circle_left)),
         title: const Text('Rate Customer', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),

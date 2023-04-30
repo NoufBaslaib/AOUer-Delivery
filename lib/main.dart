@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: const ProfileScreen(),
-      // home: MapScreen(),
+      //home: TypeOrder(),
       home: const Auth(),
       // initialRoute: PreviousOrdersScreen.screenRoute,
       routes: {

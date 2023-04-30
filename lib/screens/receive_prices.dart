@@ -99,7 +99,7 @@ class ReceivePricesScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '\$${snapshot.data!.docs[index].data()["price"]}',
+                                        '\SR${snapshot.data!.docs[index].data()["price"]}',
                                         style: const TextStyle(
                                             fontSize: 24.0,
                                             fontWeight: FontWeight.bold),
@@ -199,10 +199,25 @@ class ReceivePricesScreen extends StatelessWidget {
                                       } else {
                                         return Row(
                                           children: [
-                                            CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  snapshot.data?['profilePic']),
-                                              radius: 30,
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) => DriverInfo(
+                                                        driverId:
+                                                            offer['driverId'],
+                                                        orderId:
+                                                            order['order id']),
+                                                  ),
+                                                );
+                                              },
+                                              child: CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    snapshot
+                                                        .data?['profilePic']),
+                                                radius: 30,
+                                              ),
                                             ),
                                             const SizedBox(width: 16.0),
                                             Column(
