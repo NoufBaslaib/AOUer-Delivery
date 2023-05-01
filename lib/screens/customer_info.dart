@@ -91,15 +91,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
         'bilPic': downloadUrl.toString(),
       }),
     );
-    // print('id :: ${widget.orderId}');
-    // print('id :: ${bilPic}');
-    // FirebaseFirestore.instance.collection('orders').doc(widget.orderId).update({
-    //   'bilPic': bilPic,
-    // }).then((value) {
-    //   print('Order updated successfully');
-    // }).catchError((error) {
-    //   print('Failed to update order: $error');
-    // });
+    
   }
 
   @override
@@ -215,23 +207,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                   style: TextStyle(fontSize: 20)),
                             ),
                           ]),
-                          // SizedBox(height: 5),
-                          // Container(
-                          //   child: bilPic == null
-                          //       ? CircleAvatar(
-                          //     radius: 70,
-                          //     backgroundColor: Colors.grey,
-                          //     child: Image.asset(
-                          //       AOUlogo,
-                          //       height: 80,
-                          //       width: 80,
-                          //     ),
-                          //   )
-                          //       : CircleAvatar(
-                          //     radius: 70,
-                          //     backgroundImage: FileImage(File(bilPic!)),
-                          //   ),
-                          // ),
+                         
                           SizedBox(height: 30),
                           InkWell(
                             onTap: () {

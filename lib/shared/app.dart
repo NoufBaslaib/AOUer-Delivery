@@ -14,7 +14,8 @@ class CreditScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: const MyHomePage(title: 'Credit Card'),
+      home: MyHomePage(title: 'Credit Card'),
+      
     );
   }
 }

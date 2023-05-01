@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/components/home.component.dart';
 import 'package:delivery/constract/color_string.dart';
 import 'package:delivery/screens/type_order_screen.dart';
 import 'package:delivery/screens/driver_Info.dart';
@@ -146,17 +147,70 @@ class ReceivePricesScreen extends StatelessWidget {
                                                         context);
                                                     print(
                                                         'receive price ${offer['price']}');
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            DriverInfo(
-                                                                driverId: offer[
-                                                                    'driverId'],
-                                                                orderId: order[
-                                                                    'order id']),
-                                                      ),
-                                                    );
+                                                    showModalBottomSheet(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return Container(
+                                                            height: 150,
+                                                            child: Column(
+                                                                children: [
+                                                                  ListTile(
+                                                                    title: Text(
+                                                                        'Cash'),
+                                                                    onTap: () {
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (_) =>
+                                                                              MyHomePage(
+                                                                            title:
+                                                                                '',
+                                                                          ),
+                                                                        ),
+                                                                      ).then(
+                                                                          (result) {
+                                                                        if (result !=
+                                                                            null) {
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            MaterialPageRoute(
+                                                                              builder: (_) => DriverInfo(
+                                                                                driverId: result['driverId'],
+                                                                                orderId: result['orderId'],
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                  ListTile(
+                                                                    title: Text(
+                                                                        'Credit Card'),
+                                                                    onTap: () {
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (_) =>
+                                                                              MyHomePage(
+                                                                            driverId:
+                                                                                offer['driverId'],
+                                                                            orderId:
+                                                                                order['order id'],
+                                                                            title:
+                                                                                '',
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                ]),
+                                                          );
+                                                        });
                                                   },
                                                   child: const Text('Accept'),
                                                 ),

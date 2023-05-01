@@ -4,6 +4,7 @@ import 'package:delivery/screens/previous_orders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constract/color_string.dart';
 import '../constract/helpers.dart';
@@ -151,6 +152,31 @@ class _TypeOrderState extends State<TypeOrder> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PreviousOrdersScreen()));
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.contact_mail,
+                  size: 30,
+                ),
+                title: Text(
+                  "Contact us",
+                  style: TextStyle(fontSize: 15),
+                ),
+                onTap: () async {
+                  final Uri emailLaunchUri = Uri(
+                    scheme: 'mailto',
+                    path: 'support@example.com',
+                    queryParameters: {
+                      'subject': 'Support Request',
+                      'body': 'Please describe your issue or question here.',
+                    },
+                  );
+                  if (await canLaunch(emailLaunchUri.toString())) {
+                    await launch(emailLaunchUri.toString());
+                  } else {
+                    throw 'Could not launch $emailLaunchUri';
+                  }
                 },
               ),
               Divider(),

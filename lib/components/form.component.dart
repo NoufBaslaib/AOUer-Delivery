@@ -10,6 +10,8 @@ import 'package:delivery/shared/interfaces/orientation.interface.dart';
 import 'package:delivery/shared/widgets/spacing.widget.dart';
 import 'package:flutter/material.dart';
 
+import '../constract/color_string.dart';
+
 OrientationType orientationType = OrientationType();
 
 Widget form(
@@ -21,7 +23,8 @@ Widget form(
     ValueNotifier<String> validThru,
     TextEditingController ccvController,
     ValueNotifier<String> ccv,
-    _flip) {
+    _flip,
+    submition) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 15.0),
     child: Card(
@@ -43,7 +46,23 @@ Widget form(
               xsSpacing(orientationType.Vertical),
 
               /// CCV NUMBER
-              ccvNumberInput(ccvController, ccv, _flip)
+              ccvNumberInput(ccvController, ccv, _flip),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  submition();
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AOUAppBar,
+                    side: BorderSide.none,
+                    shape: const StadiumBorder()),
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
             ],
           ),
           mSpacing(orientationType.Vertical)
@@ -66,7 +85,7 @@ Widget cardTitle(_flip) {
               fontSize: 15,
               color: Color.fromARGB(255, 211, 175, 175),
             )),
-      )
+      ),
     ],
   );
 }
