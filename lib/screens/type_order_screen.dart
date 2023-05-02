@@ -166,7 +166,7 @@ class _TypeOrderState extends State<TypeOrder> {
                 onTap: () async {
                   final Uri emailLaunchUri = Uri(
                     scheme: 'mailto',
-                    path: 'support@example.com',
+                    path: 'support@aouer.com',
                     queryParameters: {
                       'subject': 'Support Request',
                       'body': 'Please describe your issue or question here.',

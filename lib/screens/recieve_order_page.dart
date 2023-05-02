@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../constract/color_string.dart';
 import 'customer_info.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
 import 'map_sceaan.dart';
 import 'registration_screen.dart';
 
@@ -105,7 +103,7 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
               onTap: () async {
                 final Uri emailLaunchUri = Uri(
                   scheme: 'mailto',
-                  path: 'support@example.com',
+                  path: 'support@aouer.com',
                   queryParameters: {
                     'subject': 'Support Request',
                     'body': 'Please describe your issue or question here.',
@@ -254,16 +252,13 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             ),
                           ),
                         ),
-
                         SizedBox(height: 20),
                         Divider(
                           height: 1,
                           color: Colors.grey,
                         ),
                         SizedBox(height: 20),
-
                         Row(
-                          
                           children: [
                             Icon(
                               Icons.shopping_bag,
@@ -272,7 +267,6 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                             SizedBox(
                               width: 10,
                             ),
-                           
                             Text(
                               order['order'] ?? '',
                               style: TextStyle(
@@ -321,14 +315,12 @@ class _ReceiveOrderPageState extends State<ReceiveOrderPage> {
                                 child: Text('open'))
                           ],
                         ),
-
                         Form(
                           // key: formKey,
                           child: TextField(
                             decoration: InputDecoration(
                               labelText: 'Delivery Price',
                             ),
-
                             onChanged: (value) {
                               setState(() {
                                 _deliveryPrice = value;
