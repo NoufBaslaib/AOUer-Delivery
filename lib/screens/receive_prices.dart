@@ -164,6 +164,25 @@ class ReceivePricesScreen extends StatelessWidget {
                                                                         context,
                                                                         MaterialPageRoute(
                                                                           builder: (_) =>
+                                                                              DriverInfo(
+                                                                            driverId:
+                                                                                offer['driverId'],
+                                                                            orderId:
+                                                                                order['order id'],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  ListTile(
+                                                                    title: Text(
+                                                                        'Credit Card'),
+                                                                    onTap: () {
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (_) =>
                                                                               MyHomePage(
                                                                             title:
                                                                                 '',
@@ -187,27 +206,6 @@ class ReceivePricesScreen extends StatelessWidget {
                                                                       });
                                                                     },
                                                                   ),
-                                                                  ListTile(
-                                                                    title: Text(
-                                                                        'Credit Card'),
-                                                                    onTap: () {
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (_) =>
-                                                                              MyHomePage(
-                                                                            driverId:
-                                                                                offer['driverId'],
-                                                                            orderId:
-                                                                                order['order id'],
-                                                                            title:
-                                                                                '',
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
                                                                 ]),
                                                           );
                                                         });
