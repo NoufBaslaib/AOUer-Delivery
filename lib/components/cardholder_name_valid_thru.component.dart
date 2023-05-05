@@ -10,13 +10,13 @@ Widget cardholderNameValidThru(
     ValueNotifier<String> cardholderName, ValueNotifier<String> validThru) {
   return Column(
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
-          Text('CARDHOLDER NAME', style: TextStyle(fontSize: 12)),
-          Text('VALID THRU', style: TextStyle(fontSize: 12))
-        ],
-      ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //   children: const [
+      //     Text('CARDHOLDER NAME', style: TextStyle(fontSize: 12)),
+      //     Text('VALID THRU', style: TextStyle(fontSize: 12))
+      //   ],
+      // ),
       xsSpacing(orientationType.Vertical),
       Row(
         children: [
