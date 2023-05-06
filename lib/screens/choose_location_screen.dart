@@ -68,7 +68,7 @@ class GgoogleMapScreenState extends State<GoogleMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Your Location'),
+        title: Text('Choose Order Location'),
         backgroundColor: AOUAppBar,
       ),
       body: SafeArea(

@@ -242,13 +242,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _signUp();
                                 print('the userType is=${_userType}');
                                 errorMessage = '';
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomeNavBar(userType: _userType),
-                                  ),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) =>
+                                //         HomeNavBar(userType: _userType),
+                                //   ),
+                                // );
                               } on FirebaseAuthException catch (error) {
                                 errorMessage = error.message!;
                               }

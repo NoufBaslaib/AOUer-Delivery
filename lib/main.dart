@@ -32,15 +32,11 @@ void main() async {
   await Firebase.initializeApp();
   await NotificationService.init();
   await UserPrefernces.init;
-
   runApp(const MyApp());
-  //runApp(const App());
-  //runApp(const App2());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -50,10 +46,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //home: const ProfileScreen(),
-      //home: CreditScreen(),
       home: const Auth(),
-      // initialRoute: PreviousOrdersScreen.screenRoute,
       routes: {
         RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
         SignUpScreen.screenRoute: (context) => SignUpScreen(),

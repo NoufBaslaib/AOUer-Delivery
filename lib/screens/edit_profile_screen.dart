@@ -215,23 +215,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
-                        shape: StadiumBorder(),
-                        onPrimary: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
-                    child: Text('Sign Out'),
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.canPop(context) ? Navigator.pop(context) : null;
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => RegistrationScreen()));
-                    },
-                  )
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //       backgroundColor: Colors.grey,
+                  //       shape: StadiumBorder(),
+                  //       onPrimary: Colors.white,
+                  //       padding:
+                  //           EdgeInsets.symmetric(horizontal: 32, vertical: 12)),
+                  //   child: Text('Sign Out'),
+                  //   onPressed: () {
+                  //     FirebaseAuth.instance.signOut();
+                  //     Navigator.canPop(context) ? Navigator.pop(context) : null;
+                  //     Navigator.pushReplacement(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (_) => RegistrationScreen()));
+                  //   },
+                  // )
                 ],
               ),
             ),

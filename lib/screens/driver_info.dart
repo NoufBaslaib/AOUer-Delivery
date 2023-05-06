@@ -82,16 +82,6 @@ class _DriverInfoState extends State<DriverInfo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // Text(
-            //   'Contact information',
-            //   style: TextStyle(
-            //     fontSize: 40,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
             const SizedBox(
               height: 20,
             ),
