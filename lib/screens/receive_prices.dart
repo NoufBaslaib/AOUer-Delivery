@@ -147,68 +147,17 @@ class ReceivePricesScreen extends StatelessWidget {
                                                         context);
                                                     print(
                                                         'receive price ${offer['price']}');
-                                                    showModalBottomSheet(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return Container(
-                                                            height: 150,
-                                                            child: Column(
-                                                                children: [
-                                                                  ListTile(
-                                                                    title: Text(
-                                                                        'Cash'),
-                                                                    onTap: () {
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (_) =>
-                                                                              DriverInfo(
-                                                                            driverId:
-                                                                                offer['driverId'],
-                                                                            orderId:
-                                                                                order['order id'],
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ),
-                                                                  ListTile(
-                                                                    title: Text(
-                                                                        'Credit Card'),
-                                                                    onTap: () {
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (_) =>
-                                                                              MyHomePage(
-                                                                            title:
-                                                                                '',
-                                                                          ),
-                                                                        ),
-                                                                      ).then(
-                                                                          (result) {
-                                                                        if (result !=
-                                                                            null) {
-                                                                          Navigator
-                                                                              .push(
-                                                                            context,
-                                                                            MaterialPageRoute(
-                                                                              builder: (_) => DriverInfo(
-                                                                                driverId: result['driverId'],
-                                                                                orderId: result['orderId'],
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        }
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                ]),
-                                                          );
-                                                        });
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            DriverInfo(
+                                                                driverId: offer[
+                                                                    'driverId'],
+                                                                orderId: order[
+                                                                    'order id']),
+                                                      ),
+                                                    );
                                                   },
                                                   child: const Text('Accept'),
                                                 ),
