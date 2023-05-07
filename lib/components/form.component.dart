@@ -24,7 +24,7 @@ Widget form(
     TextEditingController ccvController,
     ValueNotifier<String> ccv,
     _flip,
-    submition) {
+    submition()) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 15.0),
     child: Card(

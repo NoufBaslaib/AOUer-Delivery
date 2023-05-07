@@ -32,8 +32,8 @@ class _ShowBillScreenState extends State<ShowBillScreen> {
       }
     });
 
-    isLoading = false;
-    setState(() {});
+    
+    setState(() {isLoading = false;});
   }
 
   void initState() {
